@@ -40,16 +40,7 @@ module.exports = function(state, body = '') {
           type="text/css"
           href="${assets.get('app.css')}"
         />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="${assets.get('apple-touch-icon.png')}"
-        />
-        <link
-          rel="mask-icon"
-          href="${assets.get('safari-pinned-tab.svg')}"
-          color="#838383"
-        />
+        <link rel="icon" type="image/png" href="${assets.get('favicon.png')}" />
         <script defer src="${assets.get('app.js')}"></script>
       </head>
       <noscript>

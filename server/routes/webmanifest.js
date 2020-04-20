@@ -7,14 +7,8 @@ module.exports = function(req, res) {
     lang: req.language,
     icons: [
       {
-        src: assets.get('android-chrome-192x192.png'),
-        type: 'image/png',
-        sizes: '192x192'
-      },
-      {
-        src: assets.get('android-chrome-512x512.png'),
-        type: 'image/png',
-        sizes: '512x512'
+        src: assets.get('favicon.png'),
+        type: 'image/png'
       }
     ],
     start_url: '/',
