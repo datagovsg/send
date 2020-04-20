@@ -9,6 +9,7 @@ const language = require('../middleware/language');
 const pages = require('./pages');
 const filelist = require('./filelist');
 const clientConstants = require('../clientConstants');
+const cookieParser = require('cookie-parser');
 
 const IS_DEV = config.env === 'development';
 const ID_REGEX = '([0-9a-fA-F]{10,16})';
@@ -35,22 +36,8 @@ module.exports = function(app) {
       helmet.contentSecurityPolicy({
         directives: {
           defaultSrc: ["'self'"],
-          connectSrc: [
-            "'self'",
-            'wss://*.dev.lcip.org',
-            'wss://*.send.nonprod.cloudops.mozgcp.net',
-            'wss://send.firefox.com',
-            'https://*.dev.lcip.org',
-            'https://accounts.firefox.com',
-            'https://*.accounts.firefox.com',
-            'https://sentry.prod.mozaws.net'
-          ],
-          imgSrc: [
-            "'self'",
-            'https://*.dev.lcip.org',
-            'https://firefoxusercontent.com',
-            'https://secure.gravatar.com'
-          ],
+          connectSrc: ["'self'"],
+          imgSrc: ["'self'"],
           scriptSrc: [
             "'self'",
             function(req) {
@@ -75,6 +62,12 @@ module.exports = function(app) {
   });
   app.use(bodyParser.json());
   app.use(bodyParser.text());
+  app.use(cookieParser());
+  // Cookies don't get sent, so that's why remove auth requirement for manifest
+  app.get('/app.webmanifest', language, require('./webmanifest'));
+
+  // everything else below will only be accessible with auth
+  app.use(auth.vault);
   app.get('/', language, pages.index);
   app.get('/config', function(req, res) {
     res.json(clientConstants);
@@ -83,7 +76,6 @@ module.exports = function(app) {
   app.get('/oauth', language, pages.blank);
   app.get('/legal', language, pages.legal);
   app.get('/login', language, pages.index);
-  app.get('/app.webmanifest', language, require('./webmanifest'));
   app.get(`/download/:id${ID_REGEX}`, language, pages.download);
   app.get('/unsupported/:reason', language, pages.unsupported);
   app.get(`/api/download/:id${ID_REGEX}`, auth.hmac, require('./download'));

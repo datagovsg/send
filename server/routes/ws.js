@@ -6,6 +6,7 @@ const Limiter = require('../limiter');
 const fxa = require('../fxa');
 const { statUploadEvent } = require('../amplitude');
 const { encryptedSize } = require('../../app/utils');
+const jwt = require('jsonwebtoken');
 
 const { Transform } = require('stream');
 
@@ -41,6 +42,21 @@ module.exports = function(ws, req) {
         ? config.max_downloads
         : config.anon_max_downloads;
 
+      let vaultLoggedIn = req.cookies.authtoken;
+      try {
+        jwt.verify(vaultLoggedIn, config.jwt_secret, {
+          algorithms: ['HS256']
+        });
+      } catch (err) {
+        console.log('failed', err);
+        vaultLoggedIn = null;
+        ws.send(
+          JSON.stringify({
+            error: 401
+          })
+        );
+        return ws.close();
+      }
       if (
         !metadata ||
         !auth ||
@@ -101,6 +117,7 @@ module.exports = function(ws, req) {
         // up storage, possibly with an exception that we can catch.
         ws.send(JSON.stringify({ ok: true }));
         statUploadEvent({
+          cookie: req.headers.cookie,
           id: newId,
           ip: req.ip,
           owner,

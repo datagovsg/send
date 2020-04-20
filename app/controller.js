@@ -32,11 +32,11 @@ export default function(state, emitter) {
     render();
   }
 
-  emitter.on('DOMContentLoaded', () => {
+  emitter.on('DOMContentLoaded', async () => {
     document.addEventListener('blur', () => (updateTitle = true));
     document.addEventListener('focus', () => {
       updateTitle = false;
-      emitter.emit('DOMTitleChange', 'Firefox Send');
+      emitter.emit('DOMTitleChange', 'Vault Send');
     });
     checkFiles();
   });

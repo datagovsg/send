@@ -1,3 +1,23 @@
+# Vault Send README
+
+
+To run locally, run `npm run start-dev`. Make sure you have the following environment variables set appropriately:
+
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+LOGIN_URL
+LOGGING_URL
+JWT_SECRET
+
+Things to ensure:
+- That the JWT secret is the same as the one used in the original backend
+- The login url doesn't have to be the precise URL, it can just be vault.gov.sg, which will then trigger another redirect
+- logging_url is to note down all the actions done by the user
+
+To deploy, run `npm run build` and manually deploy the zip file to the appropriate env
+
+
+Original readme follows:
 # [![Firefox Send](./assets/icon.svg)](https://send.firefox.com/) Firefox Send
 
 [![CircleCI](https://img.shields.io/circleci/project/github/mozilla/send.svg)](https://circleci.com/gh/mozilla/send)

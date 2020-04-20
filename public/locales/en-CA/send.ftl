@@ -54,7 +54,7 @@ passwordSetError = This password could not be set
 -firefox = Firefox
 -mozilla = Mozilla
 introTitle = Simple, private file sharing
-introDescription = { -send-brand } lets you share files with end-to-end encryption and a link that automatically expires. So you can keep what you share private and make sure your stuff doesn’t stay online forever.
+introDescription = { -send-brand } lets you share files with end-to-end encryption and a link that automatically expires. So you can keep what you share private and make sure your stuff doesn’t stay on our servers forever.
 notifyUploadEncryptDone = Your file is encrypted and ready to send
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
 archiveExpiryInfo = Expires after { $downloadCount } or { $timespan }
@@ -109,8 +109,7 @@ tooManyArchives =
        *[other] Only { $count } archives are allowed.
     }
 expiredTitle = This link has expired.
-notSupportedDescription = { -send-brand } will not work with this browser. { -send-short-brand } works best with the latest version of { -firefox }, and will work with the current version of most browsers.
-downloadFirefox = Download { -firefox }
+notSupportedDescription = { -send-brand } will not work with this browser. { -send-short-brand } works best with the latest version of { -firefox } or Edge.downloadFirefox = Download { -firefox }
 legalTitle = { -send-short-brand } Privacy Notice
 legalDateStamp = Version 1.0, dated March 12, 2019
 # A short representation of a countdown timer containing the number of days, hours, and minutes remaining as digits, example "2d 11h 56m"

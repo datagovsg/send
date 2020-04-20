@@ -4,9 +4,14 @@ const path = require('path');
 const { randomBytes } = require('crypto');
 
 const conf = convict({
-  s3_bucket: {
+  login_url: {
     format: String,
     default: '',
+    env: 'LOGIN_URL'
+  },
+  s3_bucket: {
+    format: String,
+    default: 'secret-storage-test.vault.gov.sg',
     env: 'S3_BUCKET'
   },
   gcs_bucket: {
@@ -31,7 +36,7 @@ const conf = convict({
   },
   anon_max_expire_seconds: {
     format: Number,
-    default: 86400,
+    default: 86400 * 7,
     env: 'ANON_MAX_EXPIRE_SECONDS'
   },
   download_counts: {
@@ -46,7 +51,7 @@ const conf = convict({
   },
   anon_max_downloads: {
     format: Number,
-    default: 5,
+    default: 100,
     env: 'ANON_MAX_DOWNLOADS'
   },
   max_files_per_archive: {
@@ -80,10 +85,10 @@ const conf = convict({
     arg: 'port',
     env: 'PORT'
   },
-  amplitude_id: {
+  logging_url: {
     format: String,
     default: '',
-    env: 'AMPLITUDE_ID'
+    env: 'LOGGING_URL'
   },
   analytics_id: {
     format: String,
@@ -107,7 +112,7 @@ const conf = convict({
   },
   max_file_size: {
     format: Number,
-    default: 1024 * 1024 * 1024 * 2.5,
+    default: 1024 * 1024 * 1024,
     env: 'MAX_FILE_SIZE'
   },
   anon_max_file_size: {
@@ -154,6 +159,11 @@ const conf = convict({
     format: String,
     default: '',
     env: 'IP_DB'
+  },
+  jwt_secret: {
+    format: String,
+    default: '',
+    env: 'JWT_SECRET'
   }
 });
 

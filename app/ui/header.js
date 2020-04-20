@@ -22,20 +22,17 @@ class Header extends Component {
         ? html`
             <a class="flex flex-row items-center">
               <img src="${assets.get('icon.svg')}" />
-              <svg class="w-48">
-                <use xlink:href="${assets.get('wordmark.svg')}#logo" />
-              </svg>
             </a>
           `
         : html`
-            <a class="flex flex-row items-center" href="/">
+            <a
+              class="flex flex-row items-center"
+              href="${this.state.loginUrl || DEFAULTS.LOGIN_URL || '/'}"
+            >
               <img
                 alt="${this.state.translate('title')}"
                 src="${assets.get('icon.svg')}"
               />
-              <svg class="w-48 md:w-64">
-                <use xlink:href="${assets.get('wordmark.svg')}#logo" />
-              </svg>
             </a>
           `;
     return html`

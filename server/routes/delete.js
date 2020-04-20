@@ -9,6 +9,7 @@ module.exports = async function(req, res) {
     await storage.del(id);
     res.sendStatus(200);
     statDeleteEvent({
+      cookie: req.headers.cookie,
       id,
       ip: req.ip,
       owner: meta.owner,

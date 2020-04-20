@@ -2,6 +2,8 @@ const assert = require('assert');
 const crypto = require('crypto');
 const storage = require('../storage');
 const fxa = require('../fxa');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 module.exports = {
   hmac: async function(req, res, next) {
@@ -71,5 +73,24 @@ module.exports = {
       req.user = await fxa.verify(token);
     }
     return next();
+  },
+  vault: async function(req, res, next) {
+    const cookie = req.headers.cookie;
+    if (!cookie) {
+      console.log('no cookie set');
+      return res.redirect(config.login_url);
+    }
+    const token = req.cookies.authtoken;
+    if (!token) {
+      console.log('cookie has no authtoken');
+      return res.redirect(config.login_url);
+    }
+    try {
+      jwt.verify(token, config.jwt_secret, { algorithms: ['HS256'] });
+      return next();
+    } catch (err) {
+      console.log('Failed jwt verification:', token);
+      return res.redirect(config.login_url);
+    }
   }
 };
