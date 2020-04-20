@@ -6,7 +6,7 @@ const { randomBytes } = require('crypto');
 const conf = convict({
   login_url: {
     format: String,
-    default: '',
+    default: 'http://localhost:8082',
     env: 'LOGIN_URL'
   },
   s3_bucket: {
@@ -87,7 +87,7 @@ const conf = convict({
   },
   logging_url: {
     format: String,
-    default: '',
+    default: 'http://localhost:4000/secret_datasets',
     env: 'LOGGING_URL'
   },
   analytics_id: {

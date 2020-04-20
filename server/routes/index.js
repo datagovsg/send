@@ -66,6 +66,20 @@ module.exports = function(app) {
   // Cookies don't get sent, so that's why remove auth requirement for manifest
   app.get('/app.webmanifest', language, require('./webmanifest'));
 
+  // heart beat too
+  app.get('/__lbheartbeat__', function(req, res) {
+    res.sendStatus(200);
+  });
+
+  app.get('/__heartbeat__', async (req, res) => {
+    try {
+      await storage.ping();
+      res.sendStatus(200);
+    } catch (e) {
+      console.log('heartbeat failed', e);
+      res.sendStatus(500);
+    }
+  });
   // everything else below will only be accessible with auth
   app.use(auth.vault);
   app.get('/', language, pages.index);
@@ -102,18 +116,5 @@ module.exports = function(app) {
   app.get('/__version__', function(req, res) {
     // eslint-disable-next-line node/no-missing-require
     res.sendFile(require.resolve('../../dist/version.json'));
-  });
-
-  app.get('/__lbheartbeat__', function(req, res) {
-    res.sendStatus(200);
-  });
-
-  app.get('/__heartbeat__', async (req, res) => {
-    try {
-      await storage.ping();
-      res.sendStatus(200);
-    } catch (e) {
-      res.sendStatus(500);
-    }
   });
 };
