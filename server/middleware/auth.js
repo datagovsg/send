@@ -75,11 +75,6 @@ module.exports = {
     return next();
   },
   vault: async function(req, res, next) {
-    const cookie = req.headers.cookie;
-    if (!cookie) {
-      console.log('no cookie set');
-      return res.redirect(config.login_url);
-    }
     const token = req.cookies.authtoken;
     if (!token) {
       console.log('cookie has no authtoken');
