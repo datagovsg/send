@@ -8,7 +8,6 @@ const config = require('../config');
 module.exports = async function(req, res) {
   const id = req.params.id;
 
-  console.log(req.cookies);
   let vaultLoggedIn = req.cookies.authtoken;
   try {
     jwt.verify(vaultLoggedIn, config.jwt_secret, {
