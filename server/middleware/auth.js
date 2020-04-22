@@ -75,17 +75,22 @@ module.exports = {
     return next();
   },
   vault: async function(req, res, next) {
+    const redirect_uri = `${
+      config.vault_frontend_url
+    }/login?redirect_uri=${encodeURIComponent(
+      req.protocol + '://' + req.get('host') + req.originalUrl
+    )}`;
     const token = req.cookies.authtoken;
     if (!token) {
       console.log('cookie has no authtoken');
-      return res.redirect(config.login_url);
+      return res.redirect(redirect_uri);
     }
     try {
       jwt.verify(token, config.jwt_secret, { algorithms: ['HS256'] });
       return next();
     } catch (err) {
       console.log('Failed jwt verification:', token);
-      return res.redirect(config.login_url);
+      return res.redirect(redirect_uri);
     }
   }
 };
