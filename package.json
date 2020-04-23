@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "npx rimraf dist",
     "build": "npm run clean && webpack",
-    "zip": "(rm output.zip || true) && zip -r output.zip . -x '*.git*'",
+    "zip": "(rm output.zip || true) && zip -r output.zip . -x '*.git*' -qq",
     "lint": "npm-run-all lint:*",
     "lint:css": "stylelint app/*.css app/**/*.css",
     "lint:js": "eslint .",
