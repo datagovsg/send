@@ -1,0 +1,30 @@
+language: node_js
+node_js:
+- "12"
+branches:
+  only:
+  - master
+jobs:
+  include:
+  - name: frontend
+    before_script:
+    - npm install
+    - export ELASTICBEANSTALK_DEPLOYMENT_ZIP_FILE=$TRAVIS_COMMIT_$(date +%Y_%m_%d_%H_%M_%S).zip
+    - export ELASTIC_BEANSTALK_DESCRIPTION=$TRAVIS_COMMIT_MESSAGE && echo $ELASTIC_BEANSTALK_DESCRIPTION
+    - export ELASTIC_BEANSTALK_LABEL=$TRAVIS_BRANCH-$TRAVIS_COMMIT && echo $ELASTIC_BEANSTALK_LABEL
+    script:
+    - npm run build
+    - npm run zip
+    deploy:
+    - provider: elasticbeanstalk
+      access_key_id: "$AWS_ACCESS_KEY_ID_FOR_DEPLOYMENT"
+      secret_access_key: "$AWS_SECRET_ACCESS_KEY_FOR_DEPLOYMENT"
+      region: ap-southeast-1
+      zip_file: output.zip
+      app: vaultgovsg-send
+      env: send-vaultgovsg-staging
+      bucket_name: send-vaultgovsg-staging-elasticbeanstalk
+      edge: true
+      wait_until_deployed: true
+      on:
+        branch: master
