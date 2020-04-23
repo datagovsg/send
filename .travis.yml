@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- "10"
+- '10'
 branches:
   only:
   - master
@@ -22,11 +22,11 @@ jobs:
       zip_file: "$ELASTICBEANSTALK_DEPLOYMENT_ZIP_FILE"
       app: vaultgovsg-send
       env: send-vaultgovsg-staging
-      bucket_name: elasticbeanstalk-ap-southeast-1-234863389462
+      bucket_name: send-vaultgovsg-staging-elasticbeanstalk
       edge: true
       wait_until_deployed: true
       on:
         branch: master
 notifications:
   slack:
-    secure: Djk2Rl8rY3u+RxQZuKjTlUJE8t7rmu5th9o+NXD9AavaHYv1D8jLU/8KaYn/5Ny3qF3LhspOaXHhB4HwiIHKYnp06cCLLJTlb6yYiKJu2z1D8+wyTYFVvfJ0F9cutgneD/8sjzWcVWD9PgatL+X3eIJauhizu+exuYv+ynT+CAg1k0nitqnd1sKTg3zsD7ZL4wn1nbhVRKQOfnPqiQrruD0k7kOsR9qU6Tw/gefhAJKb/cZHdUwKezxtaiRkP8NqXOKJu1W4uV1PIDzbPGiR5Jcg/xpwQkqg11BRkDTZVPgQGtqz3IP/A7p4ekvFOUNXUQPsaUTnumH5fcsy5cuyyB5lW9yJQJizKEOY95gDQOkTzqpAE0ntRkNBRqFP9VHh7K4gG/kurHnS4vFhJNsWKN0hwvR65ba2PYuqlHSO0L0z1G44cx7Z+5STzmOW5d+MZqVfq8mAAcIhy7DHBCSpC4aCsfljpx+kJKmeRH5cC60dQQkx0FVDNz6q3s6NIHeeG9DJzixhKca29WV9416Z/NfHQb55deTtvXYsUulw0DLdrYVq+d+iEKpR797H8Fok4S+nBWAlRfcEAuW4aZG6ETbu+AxE/QSiND7RxRQkNLz5bnQ0UAaGI3X8UcGQ3SkW0ijCOJYj/1zPw/mVeyMgDGWrOabU8czfBIEddbxDRJE=
+    secure: CBQ2FkCAeL+Lh/noPDGiNyn8wtsCvPPKo4Q8brQzd4xDOGlr9gy6LRWkioD6UGq4PPrZGmVfeRWFkljA6nLy5lCiftD2Er8vC+qtg13kLFmK+Ng/rn9a/XUxfxtvqxBtvF2wsYSVfrVQYQCAKiPzvPL8941pODYAS1DtXwdJ0Sdja/CX+Llss5+w9RzRVDQ/uP+t35HmqRKObvjYc2ket2pNEtcw97hmnRl1PukiyBAU3B3NugEOYcf7Iz7y66+zX0FwnApW2EE677OeksBPl+eWcQr6Y8ZFpp5QW1Lo9YcpFeJZg4hbQoMh4juQoUX459ID3jIrV8HFmxyX6egaggqlyts6HAacJChn0KIj8jcmnzQU1h1/rhj2bZ+b/tH+U8iGwfTrf3W3lQo9su8KOZQagxrwV/PUW9rqOYURUacC7S8R4enqrDeOqEKUd1Qg0SSdAzgeNkOVYHGrkcBPvktgEUnqm/aCz61Nc+FQ/WTgq23dI0M2LlUM+qP86zczC3a4Ajex2AKgTmQRVR4BZtn60dGnuOVkxVxT5DynlvfU/gvCST8s3rs7Ifgatt8AY4j8NiQC6wIVtH35Zhb+w99yhDAN/htqBNPb4PtHACYkQJX8h/YGpIL45OhPknyBisLgcyrWJ5VhXie5vQeTWeS7B6ObZBsXnl9tT9p/Wlw=
