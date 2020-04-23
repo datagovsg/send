@@ -23,7 +23,7 @@ jobs:
       zip_file: output.zip
       app: vaultgovsg-send
       env: send-vaultgovsg-staging
-      bucket_name: send-vaultgovsg-staging-elasticbeanstalk
+      bucket_name: elasticbeanstalk-ap-southeast-1-234863389462
       edge: true
       wait_until_deployed: true
       on:
