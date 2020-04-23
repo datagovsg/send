@@ -27,7 +27,9 @@ class Header extends Component {
         : html`
             <a
               class="flex flex-row items-center"
-              href="${this.state.loginUrl || DEFAULTS.LOGIN_URL || '/'}"
+              href="${this.state.vaultFrontendUrl ||
+                window.DEFAULTS.VAULT_FRONTEND_URL ||
+                '/'}"
             >
               <img
                 alt="${this.state.translate('title')}"
