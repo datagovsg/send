@@ -40,13 +40,13 @@ class ECETransformer {
       {
         name: 'HKDF',
         salt: this.salt,
-        info: encoder.encode('Content-Encoding: aes128gcm\0'),
+        info: encoder.encode('Content-Encoding: aes256gcm\0'),
         hash: 'SHA-256'
       },
       inputKey,
       {
         name: 'AES-GCM',
-        length: 128
+        length: 256
       },
       true, // Edge polyfill requires key to be extractable to encrypt :/
       ['encrypt', 'decrypt']
@@ -74,7 +74,7 @@ class ECETransformer {
         inputKey,
         {
           name: 'AES-GCM',
-          length: 128
+          length: 256
         },
         true,
         ['encrypt', 'decrypt']

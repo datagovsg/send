@@ -13,13 +13,13 @@ describe('webcrypto', function() {
       {
         name: 'PBKDF2',
         salt: encoder.encode('metadata'),
-        iterations: 100,
+        iterations: 100000,
         hash: 'SHA-256'
       },
       a,
       {
         name: 'AES-GCM',
-        length: 128
+        length: 256
       },
       false,
       ['encrypt', 'decrypt']
@@ -44,7 +44,7 @@ describe('webcrypto', function() {
       {
         name: 'PBKDF2',
         salt: encoder.encode('authentication'),
-        iterations: 100,
+        iterations: 100000,
         hash: 'SHA-256'
       },
       a,
@@ -87,7 +87,7 @@ describe('webcrypto', function() {
       b,
       {
         name: 'AES-GCM',
-        length: 128
+        length: 256
       },
       true,
       ['encrypt', 'decrypt']
