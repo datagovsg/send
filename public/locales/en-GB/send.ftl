@@ -92,11 +92,11 @@ fileSize = { $num }{ $units }
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 totalSize = Total size: { $size }
 # the next line after the colon contains a file name
-copyLinkDescription = Copy the link to share your file:
+copyLinkDescription = The link contains the decyption key. Share it only with those who should be allowed to download your file:
 copyLinkButton = Copy link
 downloadTitle = Download files
 downloadDescription = This file was shared via { -send-brand } with end-to-end encryption and a link that automatically expires.
-trySendDescription = Have you logged in?
+trySendDescription = Intranet got you down?
 # count will always be > 10
 tooManyFiles =
     { $count ->

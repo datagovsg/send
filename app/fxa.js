@@ -165,7 +165,7 @@ export async function deriveFileListKey(ikm) {
     baseKey,
     {
       name: 'AES-GCM',
-      length: 128
+      length: 256
     },
     true,
     ['encrypt', 'decrypt']
