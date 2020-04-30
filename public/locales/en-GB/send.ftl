@@ -96,7 +96,7 @@ copyLinkDescription = The link contains the decyption key. Share it only with th
 copyLinkButton = Copy link
 downloadTitle = Download files
 downloadDescription = This file was shared via { -send-brand } with end-to-end encryption and a link that automatically expires.
-trySendDescription = Have you logged in?
+trySendDescription = Intranet got you down?
 # count will always be > 10
 tooManyFiles =
     { $count ->
