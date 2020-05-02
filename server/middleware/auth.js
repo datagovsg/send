@@ -82,7 +82,7 @@ module.exports = {
     )}`;
     const token = req.cookies.authtoken;
     if (!token) {
-      console.log('cookie has no authtoken');
+      console.log('cookie has no authtoken', req.url);
       return res.redirect(redirect_uri);
     }
     try {
