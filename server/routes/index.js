@@ -81,16 +81,14 @@ module.exports = function(app) {
     }
   });
   // everything else below will only be accessible with auth
-  app.use(auth.vault);
-  app.get('/', language, pages.index);
+  app.get('/', auth.vault, language, pages.index);
   app.get('/config', function(req, res) {
     res.json(clientConstants);
   });
   app.get('/error', language, pages.blank);
   app.get('/oauth', language, pages.blank);
   app.get('/legal', language, pages.legal);
-  app.get('/login', language, pages.index);
-  app.get(`/download/:id${ID_REGEX}`, language, pages.download);
+  app.get(`/download/:id${ID_REGEX}`, auth.vault, language, pages.download);
   app.get('/unsupported/:reason', language, pages.unsupported);
   app.get(`/api/download/:id${ID_REGEX}`, auth.hmac, require('./download'));
   app.get(
