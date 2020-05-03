@@ -37,12 +37,6 @@ module.exports = function(state, emit) {
               'noStreamsOptionCopy'
             )}</label>
           </div>
-          <div class="my-3">
-            <input class="mx-2" type="radio" name="gus" id="firefox" value="firefox">
-            <label class="" for="firefox">${state.translate(
-              'noStreamsOptionFirefox'
-            )}</label>
-          </div>
           <div class="mt-3">
             <input class="mx-2" type="radio" name="gus" id="download" value="download">
             <label class="" for="download">${state.translate(
