@@ -25,6 +25,7 @@ jobs:
       bucket_name: send-vaultgovsg-staging-elasticbeanstalk
       edge: true
       wait_until_deployed: true
+      wait_until_deployed_timeout: 1200 # 20 mins
       on:
         branch: master
 notifications:
