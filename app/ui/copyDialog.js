@@ -10,11 +10,15 @@ module.exports = function(name, url) {
         <h1 class="text-3xl font-bold my-4">
           ${state.translate('notifyUploadEncryptDone')}
         </h1>
-        <p
-          class="font-normal leading-normal text-grey-80 word-break-all dark:text-grey-40"
-        >
-          ${state.translate('copyLinkDescription')} <br />
+        <p class="font-normal leading-normal text-grey-80 dark:text-grey-40">
+          ${state.translate('copyLinkDescription')}<br />
           ${name}
+        </p>
+        <p
+          class="font-normal italic leading-normal text-grey-80 dark:text-grey-40"
+        >
+          <br />
+          Don't forget to send the password separately!
         </p>
         <input
           type="text"
