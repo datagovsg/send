@@ -18,7 +18,7 @@ module.exports = function(name, url) {
           class="font-normal italic leading-normal text-grey-80 dark:text-grey-40"
         >
           <br />
-          Don't forget to send the password separately!
+          If you set a password, don't forget to send it separately!
         </p>
         <input
           type="text"
