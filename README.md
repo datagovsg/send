@@ -1,24 +1,42 @@
 # Vault Send README
 
+## Local deployment guide
 
-To run locally, run `npm run start-dev`. Make sure you have the following environment variables set appropriately:
+To deploy this project locally for development purposes, follow the steps below.
 
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-VAULT_FRONTEND_URL
-LOGGING_URL
-JWT_SECRET
+### Prerequisites
 
-Things to ensure:
-- That the JWT secret is the same as the one used in the original backend
-- logging_url is to note down all the actions done by the user
+- The Vault frontend and backend must both be running before Vault Send is launched.
 
-To deploy, run `npm run build` and manually deploy the zip file to the appropriate env
+### Steps
 
+1. Install the required packages: `npm install`
+2. Create a `local.env` file with the following environment variables in it (see the `env_example` template file):
 
-Original readme follows:
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - JWT_SECRET: Must have the same value as the JWT_SECRET in the Vault backend `local.env` file
+    - LOGGING_URL: Logs all user actions to the Vault backend API route at this URL
+    - LOGIN_URL:  Points to the Vault frontend login page
+    - VAULT_FRONTEND_URL
+3. Run the appplication: `source local.env && npm run start-dev`
 
-# [![Firefox Send](./assets/icon.svg)](https://send.firefox.com/) Firefox Send
+### Note for Windows users
+
+If you are on Windows, ensure that you are using [Git Bash](https://git-scm.com/downloads) because the npm scripts contain Bash commands.
+
+You will also need to set `"start-dev": "bash npm_scripts/start-dev.sh"` in `package.json`, and create a new file `npm_scripts/start-dev.sh` containing the original command in `"start-dev"`:
+
+```
+#!/bin/bash
+npm run clean && cross-env NODE_ENV=development L10N_DEV=true FXA_CLIENT_ID=fced6b5e3f4c66b9 BASE_URL=http://localhost:8080 webpack-dev-server --mode=development
+```
+
+ This is because the npm scripts will always run in the default Windows shell rather than Git Bash. See [Stack Overflow](https://stackoverflow.com/questions/42107780/npm-script-under-cygwin-windows-the-syntax-of-the-command-is-incorrect/42108180#42108180) for more information.
+
+# Original README
+
+## [![Firefox Send](./assets/icon.svg)](https://send.firefox.com/) Firefox Send
 
 [![CircleCI](https://img.shields.io/circleci/project/github/mozilla/send.svg)](https://circleci.com/gh/mozilla/send)
 
