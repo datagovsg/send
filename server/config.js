@@ -112,12 +112,12 @@ const conf = convict({
   },
   max_file_size: {
     format: Number,
-    default: 2 * 1024 * 1024 * 1024,
+    default: 10 * 1024 * 1024 * 1024,
     env: 'MAX_FILE_SIZE'
   },
   anon_max_file_size: {
     format: Number,
-    default: 2 * 1024 * 1024 * 1024,
+    default: 10 * 1024 * 1024 * 1024,
     env: 'ANON_MAX_FILE_SIZE'
   },
   l10n_dev: {
