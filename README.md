@@ -23,16 +23,10 @@ To deploy this project locally for development purposes, follow the steps below.
 
 ### Note for Windows users
 
-If you are on Windows, ensure that you are using [Git Bash](https://git-scm.com/downloads) because the npm scripts contain Bash commands.
+If you are on Windows, ensure that you are using [Git Bash](https://git-scm.com/downloads) because the `npm run` scripts contain Bash shell commands.
 
-You will also need to set `"start-dev": "bash npm_scripts/start-dev.sh"` in `package.json`, and create a new file `npm_scripts/start-dev.sh` containing the original command in `"start-dev"`:
-
-```
-#!/bin/bash
-npm run clean && cross-env NODE_ENV=development L10N_DEV=true FXA_CLIENT_ID=fced6b5e3f4c66b9 BASE_URL=http://localhost:8080 webpack-dev-server --mode=development
-```
-
- This is because the npm scripts will always run in the default Windows shell rather than Git Bash. See [Stack Overflow](https://stackoverflow.com/questions/42107780/npm-script-under-cygwin-windows-the-syntax-of-the-command-is-incorrect/42108180#42108180) for more information.
+You will also need to configure npm to use Git Bash:  
+`npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
 
 # Original README
 
