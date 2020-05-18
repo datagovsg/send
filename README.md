@@ -28,8 +28,6 @@ If you are on Windows, ensure that you are using [Git Bash](https://git-scm.com/
 You will also need to configure npm to use Git Bash:  
 `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
 
-You can find more information [here](https://www.evantay.com/docs/full-stack/nodejs/set-npm-run-shell/).
-
 # Original README
 
 ## [![Firefox Send](./assets/icon.svg)](https://send.firefox.com/) Firefox Send
