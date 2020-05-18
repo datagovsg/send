@@ -11,14 +11,7 @@ To deploy this project locally for development purposes, follow the steps below.
 ### Steps
 
 1. Install the required packages: `npm install`
-2. Create a `local.env` file with the following environment variables in it (see the `env_example` template file):
-
-    - AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY
-    - JWT_SECRET: Must have the same value as the JWT_SECRET in the Vault backend `local.env` file
-    - LOGGING_URL: Logs all user actions to the Vault backend API route at this URL
-    - LOGIN_URL:  Points to the Vault frontend login page
-    - VAULT_FRONTEND_URL
+2. Create a `local.env` file based on the `env_example` template file
 3. Run the appplication: `source local.env && npm run start-dev`
 
 ### Note for Windows users
