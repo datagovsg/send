@@ -29,6 +29,7 @@
     "test-integration": "cross-env NODE_ENV=development wdio test/wdio.docker.conf.js",
     "circleci-test-integration": "cross-env NODE_ENV=development wdio test/wdio.circleci.conf.js",
     "start": "npm run prod",
+    "dev": "source local.env && npm run start-dev",
     "start-dev": "npm run clean && cross-env NODE_ENV=development L10N_DEV=true FXA_CLIENT_ID=fced6b5e3f4c66b9 BASE_URL=http://localhost:8080 webpack-dev-server --mode=development",
     "android": "cross-env ANDROID=1 npm start",
     "prod": "node server/bin/prod.js"
@@ -146,6 +147,7 @@
     "@sentry/node": "^5.8.0",
     "aws-sdk": "^2.568.0",
     "body-parser": "^1.19.0",
+    "boxicons": "^2.0.5",
     "choo": "^7.0.0",
     "cldr-core": "^35.1.0",
     "configstore": "github:dannycoates/configstore#master",

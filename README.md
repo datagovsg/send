@@ -19,7 +19,7 @@ To deploy this project locally for development purposes, follow the steps below.
     - LOGGING_URL: Logs all user actions to the Vault backend API route at this URL
     - LOGIN_URL:  Points to the Vault frontend login page
     - VAULT_FRONTEND_URL
-3. Run the appplication: `source local.env && npm run start-dev`
+3. Run the appplication: `npm run dev`
 
 ### Note for Windows users
 
