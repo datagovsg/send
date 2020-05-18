@@ -35,6 +35,7 @@ module.exports = async function(req) {
       'Encrypt and send files with a link that automatically expires to ensure your important documents don’t stay on our servers forever.',
     baseUrl: config.base_url,
     vaultFrontendUrl: config.vault_frontend_url,
+    logoutUrl: config.logout_url,
     ui: {},
     storage: {
       files: []

@@ -18,6 +18,7 @@ To deploy this project locally for development purposes, follow the steps below.
     - JWT_SECRET: Must have the same value as the JWT_SECRET in the Vault backend `local.env` file
     - LOGGING_URL: Logs all user actions to the Vault backend API route at this URL
     - LOGIN_URL:  Points to the Vault frontend login page
+    - LOGOUT_URL:  Points to the Vault frontend logout page
     - VAULT_FRONTEND_URL
 3. Run the appplication: `npm run dev`
 

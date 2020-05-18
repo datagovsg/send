@@ -9,6 +9,11 @@ const conf = convict({
     default: 'http://localhost:1443',
     env: 'VAULT_FRONTEND_URL'
   },
+  logout_url: {
+    format: String,
+    default: 'http://localhost:1443/auth/logout',
+    env: 'LOGOUT_URL'
+  },
   s3_bucket: {
     format: String,
     default: 'secret-storage-test.vault.gov.sg',

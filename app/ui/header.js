@@ -25,21 +25,41 @@ class Header extends Component {
             </a>
           `
         : html`
-            <a
-              class="flex flex-row items-center"
-              href="${this.state.vaultFrontendUrl ||
-                window.DEFAULTS.VAULT_FRONTEND_URL ||
-                '/'}"
-            >
-              <img
-                alt="${this.state.translate('title')}"
-                src="${assets.get('icon.svg')}"
-              />
-            </a>
+            <div class="flex">
+              <a
+                class="flex flex-row items-center"
+                href="${this.state.vaultFrontendUrl ||
+                  window.DEFAULTS.VAULT_FRONTEND_URL ||
+                  '/'}"
+              >
+                <img
+                  alt="${this.state.translate('title')}"
+                  src="${assets.get('icon.svg')}"
+                />
+              </a>
+            </div>
+            <div class="main-nav flex">
+              <a
+                href="${this.state.vaultFrontendUrl ||
+                  window.DEFAULTS.VAULT_FRONTEND_URL ||
+                  '/'}"
+              >
+                <box-icon name="arrow-back" size="sm"></box-icon>
+                <div>Back</div>
+              </a>
+              <a
+                href="${this.state.logoutUrl ||
+                  window.DEFAULTS.LOGOUT_URL ||
+                  '/'}"
+              >
+                <box-icon name="exit" size="sm"></box-icon>
+                <div>Logout</div>
+              </a>
+            </div>
           `;
     return html`
       <header
-        class="main-header relative flex-none flex flex-row items-center justify-between w-full px-6 md:px-8 h-16 md:h-24 z-20 bg-transparent"
+        class="main-header relative flex-none flex flex-row w-full z-20 bg-white"
       >
         ${title} ${this.account.render()}
       </header>
