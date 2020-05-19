@@ -123,7 +123,6 @@ module.exports = function(app) {
   });
   app.get('/error', language, pages.blank);
   app.get('/oauth', language, pages.blank);
-  app.get('/legal', language, pages.legal);
   app.get(
     `/download/:id${ID_REGEX}`,
     vaultSessionMgmt,
