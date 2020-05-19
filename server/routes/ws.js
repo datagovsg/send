@@ -50,7 +50,7 @@ module.exports = function(ws, req) {
 
     if (message) {
       console.log(`respondingToMessage in vaultSessionMgmt`);
-      respondToMessage();
+      await respondToMessage();
     }
   });
 
@@ -60,7 +60,7 @@ module.exports = function(ws, req) {
 
     if (vaultLoggedIn !== undefined) {
       console.log(`respondingToMessage in persistMessageAndCheckAuth`);
-      respondToMessage();
+      await respondToMessage();
     }
   });
 
