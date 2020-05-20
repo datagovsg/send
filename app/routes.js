@@ -14,6 +14,9 @@ module.exports = function(app = choo({ hash: true })) {
     emit('authenticate', state.query.code, state.query.state);
   });
   app.route('/login', body(require('./ui/home')));
+  app.route('/vault-logout',  function(state, emit) {
+    emit('vaultLogout', state.query.code, state.query.state);
+  });
   app.route('*', body(require('./ui/notFound')));
   return app;
 };

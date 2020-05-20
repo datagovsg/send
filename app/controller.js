@@ -1,20 +1,21 @@
-import FileSender from './fileSender';
-import FileReceiver from './fileReceiver';
-import { copyToClipboard, delay, openLinksInNewTab, percent } from './utils';
-import * as metrics from './metrics';
-import { bytes, locale } from './utils';
-import okDialog from './ui/okDialog';
-import copyDialog from './ui/copyDialog';
-import shareDialog from './ui/shareDialog';
-import signupDialog from './ui/signupDialog';
-import surveyDialog from './ui/surveyDialog';
+import FileSender from "./fileSender";
+import FileReceiver from "./fileReceiver";
+import { copyToClipboard, delay, openLinksInNewTab, percent } from "./utils";
+import * as metrics from "./metrics";
+import { bytes, locale } from "./utils";
+import okDialog from "./ui/okDialog";
+import copyDialog from "./ui/copyDialog";
+import shareDialog from "./ui/shareDialog";
+import signupDialog from "./ui/signupDialog";
+import surveyDialog from "./ui/surveyDialog";
+import { invalidateVaultSession } from "./api";
 
 export default function(state, emitter) {
   let lastRender = 0;
   let updateTitle = false;
 
   function render() {
-    emitter.emit('render');
+    emitter.emit("render");
   }
 
   async function checkFiles() {
@@ -27,35 +28,35 @@ export default function(state, emitter) {
 
   function updateProgress() {
     if (updateTitle) {
-      emitter.emit('DOMTitleChange', percent(state.transfer.progressRatio));
+      emitter.emit("DOMTitleChange", percent(state.transfer.progressRatio));
     }
     render();
   }
 
-  emitter.on('DOMContentLoaded', async () => {
-    document.addEventListener('blur', () => (updateTitle = true));
-    document.addEventListener('focus', () => {
+  emitter.on("DOMContentLoaded", async () => {
+    document.addEventListener("blur", () => (updateTitle = true));
+    document.addEventListener("focus", () => {
       updateTitle = false;
-      emitter.emit('DOMTitleChange', 'Vault Send');
+      emitter.emit("DOMTitleChange", "Vault Send");
     });
     checkFiles();
   });
 
-  emitter.on('render', () => {
+  emitter.on("render", () => {
     lastRender = Date.now();
   });
 
-  emitter.on('login', email => {
+  emitter.on("login", email => {
     state.user.login(email);
   });
 
-  emitter.on('logout', () => {
+  emitter.on("logout", () => {
     state.user.logout();
-    metrics.loggedOut({ trigger: 'button' });
-    emitter.emit('pushState', '/');
+    metrics.loggedOut({ trigger: "button" });
+    emitter.emit("pushState", "/");
   });
 
-  emitter.on('removeUpload', file => {
+  emitter.on("removeUpload", file => {
     state.archive.remove(file);
     if (state.archive.numFiles === 0) {
       state.archive.clear();
@@ -63,7 +64,7 @@ export default function(state, emitter) {
     render();
   });
 
-  emitter.on('delete', async ownedFile => {
+  emitter.on("delete", async ownedFile => {
     try {
       metrics.deletedUpload({
         size: ownedFile.size,
@@ -81,11 +82,11 @@ export default function(state, emitter) {
     render();
   });
 
-  emitter.on('cancel', () => {
+  emitter.on("cancel", () => {
     state.transfer.cancel();
   });
 
-  emitter.on('addFiles', async ({ files }) => {
+  emitter.on("addFiles", async ({ files }) => {
     if (files.length < 1) {
       return;
     }
@@ -97,8 +98,8 @@ export default function(state, emitter) {
         state.LIMITS.MAX_FILES_PER_ARCHIVE
       );
     } catch (e) {
-      if (e.message === 'fileTooBig' && maxSize < state.LIMITS.MAX_FILE_SIZE) {
-        return emitter.emit('signup-cta', 'size');
+      if (e.message === "fileTooBig" && maxSize < state.LIMITS.MAX_FILE_SIZE) {
+        return emitter.emit("signup-cta", "size");
       }
       state.modal = okDialog(
         state.translate(e.message, {
@@ -110,7 +111,7 @@ export default function(state, emitter) {
     render();
   });
 
-  emitter.on('signup-cta', source => {
+  emitter.on("signup-cta", source => {
     const query = state.query;
     state.user.startAuthFlow(source, {
       campaign: query.utm_campaign,
@@ -123,21 +124,31 @@ export default function(state, emitter) {
     render();
   });
 
-  emitter.on('authenticate', async (code, oauthState) => {
+  emitter.on("authenticate", async (code, oauthState) => {
     try {
       await state.user.finishLogin(code, oauthState);
       await state.user.syncFileList();
-      emitter.emit('replaceState', '/');
+      emitter.emit("replaceState", "/download");
     } catch (e) {
-      emitter.emit('replaceState', '/error');
+      emitter.emit("replaceState", "/error");
       setTimeout(render);
     }
   });
 
-  emitter.on('upload', async () => {
+  emitter.on("vaultLogout", async () => {
+    try {
+      invalidateVaultSession();
+      // Force reload the application to trigger vaultSessionMgmt again
+      window.location.replace("/");
+    } catch (e) {
+      return emitter.emit("replaceState", "/error");
+    }
+  });
+
+  emitter.on("upload", async () => {
     if (state.storage.files.length >= state.LIMITS.MAX_ARCHIVES_PER_USER) {
       state.modal = okDialog(
-        state.translate('tooManyArchives', {
+        state.translate("tooManyArchives", {
           count: state.LIMITS.MAX_ARCHIVES_PER_USER
         })
       );
@@ -146,9 +157,9 @@ export default function(state, emitter) {
     const archive = state.archive;
     const sender = new FileSender();
 
-    sender.on('progress', updateProgress);
-    sender.on('encrypting', render);
-    sender.on('complete', render);
+    sender.on("progress", updateProgress);
+    sender.on("encrypting", render);
+    sender.on("complete", render);
     state.transfer = sender;
     state.uploading = true;
     render();
@@ -165,7 +176,7 @@ export default function(state, emitter) {
       state.storage.addFile(ownedFile);
       // TODO integrate password into /upload request
       if (archive.password) {
-        emitter.emit('password', {
+        emitter.emit("password", {
           password: archive.password,
           file: ownedFile
         });
@@ -174,7 +185,7 @@ export default function(state, emitter) {
         ? shareDialog(ownedFile.name, ownedFile.url)
         : copyDialog(ownedFile.name, ownedFile.url);
     } catch (err) {
-      if (err.message === '0') {
+      if (err.message === "0") {
         //cancelled. do nothing
         metrics.cancelledUpload(archive, err.duration);
         render();
@@ -182,12 +193,12 @@ export default function(state, emitter) {
         // eslint-disable-next-line no-console
         console.error(err);
         state.sentry.withScope(scope => {
-          scope.setExtra('duration', err.duration);
-          scope.setExtra('size', err.size);
+          scope.setExtra("duration", err.duration);
+          scope.setExtra("size", err.size);
           state.sentry.captureException(err);
         });
         metrics.stoppedUpload(archive, err.duration);
-        emitter.emit('pushState', '/error');
+        emitter.emit("pushState", "/error");
       }
     } finally {
       openLinksInNewTab(links, false);
@@ -199,7 +210,7 @@ export default function(state, emitter) {
     }
   });
 
-  emitter.on('password', async ({ password, file }) => {
+  emitter.on("password", async ({ password, file }) => {
     try {
       state.settingPassword = true;
       render();
@@ -216,7 +227,7 @@ export default function(state, emitter) {
     render();
   });
 
-  emitter.on('getMetadata', async () => {
+  emitter.on("getMetadata", async () => {
     const file = state.fileInfo;
 
     const receiver = new FileReceiver(file);
@@ -224,10 +235,10 @@ export default function(state, emitter) {
       await receiver.getMetadata();
       state.transfer = receiver;
     } catch (e) {
-      if (e.message === '401' || e.message === '404') {
+      if (e.message === "401" || e.message === "404") {
         file.password = null;
         if (!file.requiresPassword) {
-          return emitter.emit('pushState', '/404');
+          return emitter.emit("pushState", "/404");
         }
       }
     }
@@ -235,10 +246,10 @@ export default function(state, emitter) {
     render();
   });
 
-  emitter.on('download', async file => {
-    state.transfer.on('progress', updateProgress);
-    state.transfer.on('decrypting', render);
-    state.transfer.on('complete', render);
+  emitter.on("download", async file => {
+    state.transfer.on("progress", updateProgress);
+    state.transfer.on("decrypting", render);
+    state.transfer.on("complete", render);
     const links = openLinksInNewTab();
     const size = file.size;
     const start = Date.now();
@@ -256,19 +267,19 @@ export default function(state, emitter) {
         password_protected: file.requiresPassword
       });
     } catch (err) {
-      if (err.message === '0') {
+      if (err.message === "0") {
         // download cancelled
         state.transfer.reset();
         render();
       } else {
         // eslint-disable-next-line no-console
         state.transfer = null;
-        const location = err.message === '404' ? '/404' : '/error';
-        if (location === '/error') {
+        const location = err.message === "404" ? "/404" : "/error";
+        if (location === "/error") {
           state.sentry.withScope(scope => {
-            scope.setExtra('duration', err.duration);
-            scope.setExtra('size', err.size);
-            scope.setExtra('progress', err.progress);
+            scope.setExtra("duration", err.duration);
+            scope.setExtra("size", err.size);
+            scope.setExtra("progress", err.progress);
             state.sentry.captureException(err);
           });
           const duration = Date.now() - start;
@@ -278,23 +289,23 @@ export default function(state, emitter) {
             password_protected: file.requiresPassword
           });
         }
-        emitter.emit('pushState', location);
+        emitter.emit("pushState", location);
       }
     } finally {
       openLinksInNewTab(links, false);
     }
   });
 
-  emitter.on('copy', ({ url }) => {
+  emitter.on("copy", ({ url }) => {
     copyToClipboard(url);
     // metrics.copiedLink({ location });
   });
 
-  emitter.on('closeModal', () => {
+  emitter.on("closeModal", () => {
     if (
       state.PREFS.surveyUrl &&
-      ['copy', 'share'].includes(state.modal.type) &&
-      locale().startsWith('en') &&
+      ["copy", "share"].includes(state.modal.type) &&
+      locale().startsWith("en") &&
       (state.storage.totalUploads > 1 || state.storage.totalDownloads > 0) &&
       !state.user.surveyed
     ) {
@@ -308,7 +319,7 @@ export default function(state, emitter) {
 
   setInterval(() => {
     // poll for updates of the upload list
-    if (!state.modal && state.route === '/') {
+    if (!state.modal && state.route === "/") {
       checkFiles();
     }
   }, 2 * 60 * 1000);
@@ -317,7 +328,7 @@ export default function(state, emitter) {
     // poll for rerendering the file list countdown timers
     if (
       !state.modal &&
-      state.route === '/' &&
+      state.route === "/" &&
       state.storage.files.length > 0 &&
       Date.now() - lastRender > 30000
     ) {

@@ -1,27 +1,28 @@
-const html = require('choo/html');
-const Component = require('choo/component');
-const Account = require('./account');
-const assets = require('../../common/assets');
-const { platform } = require('../utils');
+const html = require("choo/html");
+const Component = require("choo/component");
+const Account = require("./account");
+const assets = require("../../common/assets");
+const { platform } = require("../utils");
 
 class Header extends Component {
   constructor(name, state, emit) {
     super(name);
     this.state = state;
     this.emit = emit;
-    this.account = state.cache(Account, 'account');
+    this.account = state.cache(Account, "account");
   }
 
   update() {
     this.account.render();
     return false;
   }
+
   createElement() {
     const title =
-      platform() === 'android'
+      platform() === "android"
         ? html`
             <a class="flex flex-row items-center">
-              <img src="${assets.get('icon.svg')}" />
+              <img src="${assets.get("icon.svg")}" />
             </a>
           `
         : html`
@@ -30,11 +31,11 @@ class Header extends Component {
                 class="flex flex-row items-center"
                 href="${this.state.vaultFrontendUrl ||
                   window.DEFAULTS.LOGIN_URL ||
-                  '/'}"
+                  "/"}"
               >
                 <img
-                  alt="${this.state.translate('title')}"
-                  src="${assets.get('icon.svg')}"
+                  alt="${this.state.translate("title")}"
+                  src="${assets.get("icon.svg")}"
                 />
               </a>
             </div>
@@ -42,16 +43,12 @@ class Header extends Component {
               <a
                 href="${this.state.vaultFrontendUrl ||
                   window.DEFAULTS.LOGIN_URL ||
-                  '/'}"
+                  "/"}"
               >
                 <box-icon name="arrow-back" size="sm"></box-icon>
                 <div>Back</div>
               </a>
-              <a
-                href="${this.state.logoutUrl ||
-                  window.DEFAULTS.LOGOUT_URL ||
-                  '/'}"
-              >
+              <a href="/vault-logout">
                 <box-icon name="exit" size="sm"></box-icon>
                 <div>Logout</div>
               </a>
