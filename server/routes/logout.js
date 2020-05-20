@@ -4,7 +4,7 @@ module.exports = async function(req, res) {
     return res.sendStatus(200);
   }
 
-  req.session.destroy((err) => {
+  req.session.destroy(err => {
     if (err) {
       res.sendStatus(500);
     }
