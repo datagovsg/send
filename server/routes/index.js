@@ -11,6 +11,10 @@ const filelist = require('./filelist');
 const clientConstants = require('../clientConstants');
 const cookieParser = require('cookie-parser');
 
+const redisClient = require('redis').createClient(config.redis_session_url);
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+
 const IS_DEV = config.env === 'development';
 const ID_REGEX = '([0-9a-fA-F]{10,16})';
 
@@ -81,16 +85,59 @@ module.exports = function(app) {
     }
   });
   // everything else below will only be accessible with auth
-  app.get('/', auth.vault, language, pages.index);
+
+  const vaultSessionMgmt = session({
+    secret: config.cookie_secret,
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    unset: 'destroy',
+    name: 'SID',
+    store: new RedisStore({ client: redisClient }),
+    cookie: {
+      path: '/',
+      domain: config.cookie_domain,
+      maxAge: 20 * 60 * 1000,
+      httpOnly: true,
+      sameSite: true,
+      secure: IS_DEV
+    }
+  });
+
+  const sessionIsValid = (req, res, next) => {
+    if (req.session.email) {
+      return next();
+    } else {
+      const redirect_uri = `${
+        config.vault_frontend_url
+      }/login?redirect_uri=${encodeURIComponent(
+        req.protocol + '://' + req.get('host') + req.originalUrl
+      )}`;
+      return res.redirect(redirect_uri);
+    }
+  };
+
+  app.get('/', vaultSessionMgmt, sessionIsValid, language, pages.index);
   app.get('/config', function(req, res) {
     res.json(clientConstants);
   });
   app.get('/error', language, pages.blank);
   app.get('/oauth', language, pages.blank);
-  app.get('/legal', language, pages.legal);
-  app.get(`/download/:id${ID_REGEX}`, auth.vault, language, pages.download);
+  app.get(
+    `/download/:id${ID_REGEX}`,
+    vaultSessionMgmt,
+    sessionIsValid,
+    language,
+    pages.download
+  );
   app.get('/unsupported/:reason', language, pages.unsupported);
-  app.get(`/api/download/:id${ID_REGEX}`, auth.hmac, require('./download'));
+  app.get(
+    `/api/download/:id${ID_REGEX}`,
+    vaultSessionMgmt,
+    sessionIsValid,
+    auth.hmac,
+    require('./download')
+  );
   app.get(
     `/api/download/blob/:id${ID_REGEX}`,
     auth.hmac,
