@@ -17,7 +17,7 @@ module.exports = {
     DOWNLOAD_COUNTS: config.download_counts,
     EXPIRE_TIMES_SECONDS: config.expire_times_seconds,
     EXPIRE_SECONDS: config.default_expire_seconds,
-    VAULT_FRONTEND_URL: config.vault_frontend_url,
+    LOGIN_URL: config.LOGIN_URL,
     LOGOUT_URL: config.logout_url
   }
 };

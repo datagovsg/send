@@ -4,10 +4,10 @@ const path = require('path');
 const { randomBytes } = require('crypto');
 
 const conf = convict({
-  vault_frontend_url: {
+  LOGIN_URL: {
     format: String,
     default: 'http://localhost:1443',
-    env: 'VAULT_FRONTEND_URL'
+    env: 'LOGIN_URL'
   },
   logout_url: {
     format: String,

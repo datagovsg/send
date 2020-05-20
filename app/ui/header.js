@@ -29,7 +29,7 @@ class Header extends Component {
               <a
                 class="flex flex-row items-center"
                 href="${this.state.vaultFrontendUrl ||
-                  window.DEFAULTS.VAULT_FRONTEND_URL ||
+                  window.DEFAULTS.LOGIN_URL ||
                   '/'}"
               >
                 <img
@@ -41,7 +41,7 @@ class Header extends Component {
             <div class="main-nav flex">
               <a
                 href="${this.state.vaultFrontendUrl ||
-                  window.DEFAULTS.VAULT_FRONTEND_URL ||
+                  window.DEFAULTS.LOGIN_URL ||
                   '/'}"
               >
                 <box-icon name="arrow-back" size="sm"></box-icon>

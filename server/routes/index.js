@@ -109,7 +109,7 @@ module.exports = function(app) {
       return next();
     } else {
       const redirect_uri = `${
-        config.vault_frontend_url
+        config.LOGIN_URL
       }/login?redirect_uri=${encodeURIComponent(
         req.protocol + '://' + req.get('host') + req.originalUrl
       )}`;
