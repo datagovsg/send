@@ -2,22 +2,9 @@ const storage = require('../storage');
 const mozlog = require('../log');
 const log = mozlog('send.download');
 const { statDownloadEvent } = require('../amplitude');
-const jwt = require('jsonwebtoken');
-const config = require('../config');
 
 module.exports = async function(req, res) {
   const id = req.params.id;
-
-  let vaultLoggedIn = req.cookies.authtoken;
-  try {
-    jwt.verify(vaultLoggedIn, config.jwt_secret, {
-      algorithms: ['HS256']
-    });
-  } catch (err) {
-    console.log('No permission to download:', err);
-    return res.sendStatus(401);
-  }
-
   try {
     const meta = req.meta;
     const fileStream = await storage.get(id);

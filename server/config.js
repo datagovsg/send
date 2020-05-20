@@ -165,10 +165,20 @@ const conf = convict({
     default: '',
     env: 'IP_DB'
   },
-  jwt_secret: {
+  cookie_secret: {
     format: String,
     default: '',
-    env: 'JWT_SECRET'
+    env: 'COOKIE_SECRET'
+  },
+  cookie_domain: {
+    format: String,
+    default: '',
+    env: 'COOKIE_DOMAIN'
+  },
+  redis_session_url: {
+    format: String,
+    default: '',
+    env: 'REDIS_SESSION_URL'
   }
 });
 
