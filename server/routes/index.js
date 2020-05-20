@@ -108,11 +108,7 @@ module.exports = function(app) {
     if (req.session.email) {
       return next();
     } else {
-      const redirect_uri = `${
-        config.LOGIN_URL
-      }/login?redirect_uri=${encodeURIComponent(
-        req.protocol + '://' + req.get('host') + req.originalUrl
-      )}`;
+      const redirect_uri = `${config.LOGIN_URL}/login?redirect_key=${config.SEND_FRONTEND_REDIRECT_KEY}`;
       return res.redirect(redirect_uri);
     }
   };

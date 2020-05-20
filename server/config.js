@@ -9,6 +9,11 @@ const conf = convict({
     default: 'http://localhost:1443',
     env: 'LOGIN_URL'
   },
+  SEND_FRONTEND_REDIRECT_KEY: {
+    format: String,
+    default: 'send',
+    env: 'SEND_FRONTEND_REDIRECT_KEY'
+  },
   s3_bucket: {
     format: String,
     default: 'secret-storage-test.vault.gov.sg',
