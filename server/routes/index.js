@@ -109,7 +109,7 @@ module.exports = function(app) {
       return next();
     } else {
       const redirect_uri = `${
-        config.vault_frontend_url
+        config.LOGIN_URL
       }/login?redirect_uri=${encodeURIComponent(
         req.protocol + '://' + req.get('host') + req.originalUrl
       )}`;
@@ -142,6 +142,12 @@ module.exports = function(app) {
     `/api/download/blob/:id${ID_REGEX}`,
     auth.hmac,
     require('./download')
+  );
+  app.get(
+    `/api/auth/logout`,
+    vaultSessionMgmt,
+    sessionIsValid,
+    require('./logout')
   );
   app.get(`/api/exists/:id${ID_REGEX}`, require('./exists'));
   app.get(`/api/metadata/:id${ID_REGEX}`, auth.hmac, require('./metadata'));

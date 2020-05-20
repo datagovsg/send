@@ -31,7 +31,7 @@ a:focus {
 }
 
 body {
-  background-image: url('../assets/bg.svg');
+  background-image: url('../../assets/bg.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -93,7 +93,7 @@ body {
   @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url('../assets/lock.svg');
+  background-image: url('../../assets/lock.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
@@ -107,7 +107,7 @@ body {
   @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url('../assets/lock.svg');
+  background-image: url('../../assets/lock.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
@@ -140,7 +140,7 @@ footer li:hover {
 
 .feedback-link {
   background-color: #000;
-  background-image: url('../assets/feedback.svg');
+  background-image: url('../../assets/feedback.svg');
   background-position: 0.125rem 0.25rem;
   background-repeat: no-repeat;
   background-size: 1.125rem;
@@ -165,9 +165,40 @@ footer li:hover {
   @apply text-blue-70;
 }
 
+.main-header {
+  box-shadow: 0.5px 1px 0 1px #ebebeb;
+  height: 80px;
+  padding-left: 30px;
+  padding-right: 30px;
+  justify-content: space-between;
+}
+
 .main-header img {
-  height: 32px;
-  width: auto;
+  width: 120px;
+  height: auto;
+}
+
+.main-header .main-nav {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.main-header .main-nav a {
+  cursor: pointer;
+  color: #303754;
+  display: flex;
+  padding-left: 15px;
+  font-size: 14px;
+  margin: auto;
+}
+
+.main-nav div {
+  padding: 0 5px;
+}
+
+.main-nav a i,
+.main-nav a div {
+  margin: auto;
 }
 
 .intro {
@@ -188,7 +219,7 @@ footer li:hover {
 }
 
 .mozilla-logo {
-  background-image: url('../assets/mozilla-logo.svg');
+  background-image: url('../../assets/mozilla-logo.svg');
   background-repeat: no-repeat;
   background-size: 100px, 48px;
   overflow: hidden;
@@ -271,15 +302,15 @@ progress::-moz-progress-bar {
 }
 
 select {
-  background-image: url('../assets/select-arrow.svg');
+  background-image: url('../../assets/select-arrow.svg');
   background-position: calc(100% - 0.75rem);
   background-repeat: no-repeat;
 }
 
 @screen md {
   .main-header img {
-    height: 48px;
-    width: auto;
+    width: 120px;
+    height: auto;
   }
 
   .intro {

@@ -12,7 +12,7 @@ To deploy this project locally for development purposes, follow the steps below.
 
 1. Install the required packages: `npm install`
 2. Create a `local.env` file based on the `env_example` template file
-3. Run the appplication: `source local.env && npm run start-dev`
+3. Run the appplication: `npm run dev`
 
 ### Note for Windows users
 

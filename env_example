@@ -1,7 +1,7 @@
 # AWS Env vars
 export AWS_ACCESS_KEY_ID=""
 export AWS_SECRET_ACCESS_KEY=""
-export VAULT_FRONTEND_URL="http://localhost:8082"
+export LOGIN_URL="http://localhost:8082"
 export LOGGING_URL="http://localhost:4000/secret_datasets"
 export COOKIE_SECRET="blahblahblah"
 export COOKIE_DOMAIN="localhost"

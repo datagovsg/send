@@ -8,6 +8,7 @@ import copyDialog from './ui/copyDialog';
 import shareDialog from './ui/shareDialog';
 import signupDialog from './ui/signupDialog';
 import surveyDialog from './ui/surveyDialog';
+import { invalidateVaultSession } from './api';
 
 export default function(state, emitter) {
   let lastRender = 0;
@@ -127,10 +128,20 @@ export default function(state, emitter) {
     try {
       await state.user.finishLogin(code, oauthState);
       await state.user.syncFileList();
-      emitter.emit('replaceState', '/');
+      emitter.emit('replaceState', '/download');
     } catch (e) {
       emitter.emit('replaceState', '/error');
       setTimeout(render);
+    }
+  });
+
+  emitter.on('vaultLogout', async () => {
+    try {
+      invalidateVaultSession();
+      // Force reload the application to trigger vaultSessionMgmt again
+      window.location.replace('/');
+    } catch (e) {
+      return emitter.emit('replaceState', '/error');
     }
   });
 
