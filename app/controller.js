@@ -137,7 +137,7 @@ export default function(state, emitter) {
 
   emitter.on('vaultLogout', async () => {
     try {
-      invalidateVaultSession();
+      await invalidateVaultSession();
       // Force reload the application to trigger vaultSessionMgmt again
       window.location.replace('/');
     } catch (e) {
