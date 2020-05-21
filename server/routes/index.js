@@ -108,6 +108,9 @@ module.exports = function(app) {
     if (req.session.email) {
       return next();
     } else {
+      // The Regex below removes '/download/' from the '/download/download_id/' URL
+      // It will be added back by the Vault app, therefore only allowing redirection
+      // to the Send landing page or '/download/*' pages.
       const download_id = req.originalUrl.match('(?<=/download/).*$');
       // If it is a redirect to a download link, append download_id and # tag
       // A valid Vault Send download link requires /download/download_id/#download_tag
