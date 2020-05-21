@@ -108,7 +108,12 @@ module.exports = function(app) {
     if (req.session.email) {
       return next();
     } else {
-      const redirect_uri = `${config.LOGIN_URL}/login?redirect_key=${config.SEND_FRONTEND_REDIRECT_KEY}`;
+      const download_id = req.originalUrl.match('(?<=/download/).*$');
+      // If it is a redirect to a download link, append download_id and # tag
+      // A valid Vault Send download link requires /download/download_id/#download_tag
+      const redirect_uri = download_id
+        ? `${config.LOGIN_URL}/login?redirect_key=${config.SEND_FRONTEND_REDIRECT_KEY}&download_id=${download_id}`
+        : `${config.LOGIN_URL}/login?redirect_key=${config.SEND_FRONTEND_REDIRECT_KEY}`;
       return res.redirect(redirect_uri);
     }
   };
