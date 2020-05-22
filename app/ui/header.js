@@ -45,11 +45,11 @@ class Header extends Component {
                   window.DEFAULTS.LOGIN_URL ||
                   '/'}"
               >
-                <box-icon name="arrow-back" size="sm"></box-icon>
+                <box-icon name="arrow-back" size="14px"></box-icon>
                 <div>Back</div>
               </a>
               <a href="/vault-logout">
-                <box-icon name="exit" size="sm"></box-icon>
+                <box-icon name="exit" size="14px"></box-icon>
                 <div>Logout</div>
               </a>
             </div>
