@@ -13,9 +13,27 @@ class Footer extends Component {
 
   createElement() {
     return html`
-      <footer
-        class="flex flex-col md:flex-row items-start w-full flex-none self-start p-6 md:p-8 font-medium text-xs text-grey-60 dark:text-grey-40 md:items-center justify-between"
-      ></footer>
+      <footer>
+        <div class="footerContainer">
+          <div class="leftFooter">
+            © 2020 Open Government Products - A Division of GovTech
+          </div>
+          <div class="rightFooter">
+            <a
+              href="${this.state.vaultFrontendUrl ||
+                window.DEFAULTS.LOGIN_URL ||
+                '/'}"
+              rel="noopener noreferrer"
+              >Back to Vault
+              <box-icon
+                color="#a7b3be"
+                name="link-external"
+                size="16px"
+              ></box-icon>
+            </a>
+          </div>
+        </div>
+      </footer>
     `;
   }
 }
