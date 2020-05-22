@@ -31,7 +31,7 @@ a:focus {
 }
 
 body {
-  background-image: url("../../assets/bg.svg");
+  background-image: url('../../assets/bg.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -60,7 +60,7 @@ body {
   @apply select-none;
 }
 
-.checkbox > input[type="checkbox"] {
+.checkbox > input[type='checkbox'] {
   @apply absolute;
   @apply opacity-0;
 }
@@ -74,7 +74,7 @@ body {
   @apply border;
   @apply rounded-sm;
 
-  content: "";
+  content: '';
   height: 1.5rem;
   width: 1.5rem;
   margin-right: 0.5rem;
@@ -93,7 +93,7 @@ body {
   @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url("../../assets/lock.svg");
+  background-image: url('../../assets/lock.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
@@ -107,7 +107,7 @@ body {
   @apply bg-blue-50;
   @apply border-blue-50;
 
-  background-image: url("../../assets/lock.svg");
+  background-image: url('../../assets/lock.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
@@ -137,7 +137,7 @@ details[open] > summary > svg {
 
 .feedback-link {
   background-color: #000;
-  background-image: url("../../assets/feedback.svg");
+  background-image: url('../../assets/feedback.svg');
   background-position: 0.125rem 0.25rem;
   background-repeat: no-repeat;
   background-size: 1.125rem;
@@ -168,7 +168,7 @@ details[open] > summary > svg {
   padding-left: 30px;
   padding-right: 30px;
   justify-content: space-between;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .main-header img {
@@ -212,7 +212,7 @@ footer {
   color: #a7b3be;
   background: #3d3d4d;
   box-sizing: border-box;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
 }
 
@@ -262,7 +262,7 @@ footer {
 }
 
 .mozilla-logo {
-  background-image: url("../../assets/mozilla-logo.svg");
+  background-image: url('../../assets/mozilla-logo.svg');
   background-repeat: no-repeat;
   background-size: 100px, 48px;
   overflow: hidden;
@@ -275,7 +275,7 @@ footer {
 }
 
 #password-msg::after {
-  content: "\200b";
+  content: '\200b';
 }
 
 progress {
@@ -345,7 +345,7 @@ progress::-moz-progress-bar {
 }
 
 select {
-  background-image: url("../../assets/select-arrow.svg");
+  background-image: url('../../assets/select-arrow.svg');
   background-position: calc(100% - 0.75rem);
   background-repeat: no-repeat;
 }
