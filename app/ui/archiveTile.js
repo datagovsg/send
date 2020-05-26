@@ -450,6 +450,7 @@ module.exports.empty = function(state, emit) {
         id="file-upload"
         class="opacity-0 w-0 h-0 appearance-none absolute overflow-hidden"
         type="file"
+        accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.csv,.xls,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,application/vnd.ms-powerpoint,.pptx,.ppt,audio/*,video/*,image/*,application/pdf"
         multiple
         onfocus="${focus}"
         onblur="${blur}"
