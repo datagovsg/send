@@ -35,6 +35,7 @@ module.exports = function(state, body = '') {
 
         <link rel="manifest" href="/app.webmanifest" />
         <link rel="stylesheet" type="text/css" href="/inter.css" />
+        <link rel="stylesheet" type="text/css" href="/boxicons.css" />
         <link
           rel="stylesheet"
           type="text/css"
