@@ -69,6 +69,28 @@ const conf = convict({
     default: 16,
     env: 'MAX_ARCHIVES_PER_USER'
   },
+  allowed_file_types: {
+    format: Array,
+    default: [
+      '.doc',
+      '.docx',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      '.csv',
+      '.xls',
+      '.xlsx',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      ' application/vnd.ms-excel',
+      'application/vnd.ms-powerpoint',
+      '.pptx',
+      '.ppt',
+      'audio/*',
+      'video/*',
+      'image/*',
+      'application/pdf'
+    ],
+    env: 'ALLOWED_FILE_TYPES'
+  },
   redis_host: {
     format: String,
     default: 'localhost',
