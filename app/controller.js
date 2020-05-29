@@ -94,32 +94,23 @@ export default function(state, emitter) {
     const fileTypes = state.LIMITS.ALLOWED_FILE_TYPES;
 
     for (let i = 0; i < files.length; i++) {
-      let fn = files[i].name;
-      let extIndex = fn.lastIndexOf('.');
-
-      // Check for missing extension
-      if (extIndex == -1) {
-        state.modal = okDialog(
-          state.translate('fileMissingExtension', { file: fn })
-        );
-        render();
-        return;
-      }
-
-      // Check for valid extension via MIME type or filename extension substring
-      let ft = files[i].type; // MIME type
-      let fe = fn.substring(extIndex); // Extension part of filename
+      // Check for valid MIME type
+      let fileType = files[i].type.toLowerCase();
       let isInvalidType = true;
       for (let j = 0; j < fileTypes.length; j++) {
-        if (ft === fileTypes[j] || fe === fileTypes[j]) {
+        if (fileType === fileTypes[j]) {
           isInvalidType = false;
           continue;
         }
       }
 
       if (isInvalidType) {
+        let fileName = files[i].name;
         state.modal = okDialog(
-          state.translate('fileInvalidExtension', { file: fn, type: ft })
+          state.translate('fileInvalidExtension', {
+            file: fileName,
+            type: fileType
+          })
         );
         render();
         return;
