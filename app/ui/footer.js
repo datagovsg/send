@@ -24,12 +24,8 @@ class Footer extends Component {
                 window.DEFAULTS.LOGIN_URL ||
                 '/'}"
               rel="noopener noreferrer"
-              >Back to Vault
-              <box-icon
-                color="#a7b3be"
-                name="link-external"
-                size="16px"
-              ></box-icon>
+              >Return to Vault
+              <i class="bx bx-link-external"></i>
             </a>
           </div>
         </div>
