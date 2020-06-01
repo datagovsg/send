@@ -21,6 +21,7 @@ fileSizeProgress = ({ $partialSize } of { $totalSize })
 sendYourFilesLink = Try Vault Send
 errorPageHeader = Something went wrong!
 fileTooBig = That file is too big to upload. It should be less than { $size }
+fileInvalidExtension = A file '{ $file }' has an invalid type of '{ $type }' which is not allowed.
 linkExpiredAlt = Link expired
 notSupportedHeader = Your browser is not supported.
 notSupportedLink = Why is my browser not supported?

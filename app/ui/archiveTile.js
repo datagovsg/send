@@ -450,6 +450,7 @@ module.exports.empty = function(state, emit) {
         id="file-upload"
         class="opacity-0 w-0 h-0 appearance-none absolute overflow-hidden"
         type="file"
+        accept="${state.LIMITS.ALLOWED_FILE_TYPES}"
         multiple
         onfocus="${focus}"
         onblur="${blur}"
