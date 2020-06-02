@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const VersionPlugin = require('./build/version_plugin');
-const AndroidIndexPlugin = require('./build/android_index_plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const webJsOptions = {
@@ -79,7 +78,6 @@ const web = {
   target: 'web',
   entry: {
     app: ['./app/main.js'],
-    android: ['./android/android.js'],
     ios: ['./ios/ios.js']
   },
   output: {
@@ -195,7 +193,6 @@ const web = {
       filename: '[name].[md5:contenthash:8].css'
     }),
     new VersionPlugin(), // used for the /__version__ route
-    new AndroidIndexPlugin(),
     new ManifestPlugin() // used by server side to resolve hashed assets
   ],
   devtool: 'source-map',

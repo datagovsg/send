@@ -1,4 +1,3 @@
-/* global Android */
 let html;
 try {
   html = require('choo/html');
@@ -157,9 +156,6 @@ function browserName() {
     if (/safari/i.test(navigator.userAgent)) {
       return 'safari';
     }
-    if (/send android/i.test(navigator.userAgent)) {
-      return 'android-app';
-    }
     return 'other';
   } catch (e) {
     return 'unknown';
@@ -252,9 +248,6 @@ function timeLeft(milliseconds) {
 }
 
 function platform() {
-  if (typeof Android === 'object') {
-    return 'android';
-  }
   return 'web';
 }
 

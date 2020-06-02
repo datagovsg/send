@@ -1,5 +1,3 @@
-/* global Android */
-
 const html = require('choo/html');
 const raw = require('choo/html/raw');
 const assets = require('../../common/assets');
@@ -170,32 +168,18 @@ function archiveDetails(translate, archive) {
 }
 
 module.exports = function(state, emit, archive) {
-  const copyOrShare =
-    state.capabilities.share || platform() === 'android'
-      ? html`
-          <button
-            class="link-blue self-end flex items-start"
-            onclick=${share}
-            title="Share link"
-          >
-            <svg class="h-4 w-4 mr-2">
-              <use xlink:href="${assets.get('share-24.svg')}#icon" />
-            </svg>
-            Share link
-          </button>
-        `
-      : html`
-          <button
-            class="link-blue focus:outline self-end flex items-center"
-            onclick=${copy}
-            title="${state.translate('copyLinkButton')}"
-          >
-            <svg class="h-4 w-4 mr-2">
-              <use xlink:href="${assets.get('copy-16.svg')}#icon" />
-            </svg>
-            ${state.translate('copyLinkButton')}
-          </button>
-        `;
+  const copyOrShare = html`
+    <button
+      class="link-blue focus:outline self-end flex items-center"
+      onclick=${copy}
+      title="${state.translate('copyLinkButton')}"
+    >
+      <svg class="h-4 w-4 mr-2">
+        <use xlink:href="${assets.get('copy-16.svg')}#icon" />
+      </svg>
+      ${state.translate('copyLinkButton')}
+    </button>
+  `;
   const dl =
     platform() === 'web'
       ? html`
@@ -257,24 +241,6 @@ module.exports = function(state, emit, archive) {
   function del(event) {
     event.stopPropagation();
     emit('delete', archive);
-  }
-
-  async function share(event) {
-    event.stopPropagation();
-    if (platform() === 'android') {
-      Android.shareUrl(archive.url);
-    } else {
-      try {
-        await navigator.share({
-          title: state.translate('-send-brand'),
-          text: `Download "${archive.name}" with Vault Send: simple, safe file sharing`,
-          //state.translate('shareMessage', { name }),
-          url: archive.url
-        });
-      } catch (e) {
-        // ignore
-      }
-    }
   }
 };
 

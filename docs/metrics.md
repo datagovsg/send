@@ -77,7 +77,7 @@ Client events allow us to aggregate data about how the user interface is being u
 * `session_id` timestamp
 * `user_id` hash of (fxa_id + Date.year + Date.month)
 * `device_id` hash of (localStorage random id + Date.year + Date.month)
-* `platform` [web | android]
+* `platform` [web]
 * `country`
 * `region`
 * `language`

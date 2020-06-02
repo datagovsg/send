@@ -1,12 +1,11 @@
 const html = require('choo/html');
 const assets = require('../../common/assets');
-const { bytes, platform } = require('../utils');
+const { bytes } = require('../utils');
 const { canceledSignup, submittedSignup } = require('../metrics');
 
 module.exports = function(trigger) {
   return function(state, emit, close) {
     const DAYS = Math.floor(state.LIMITS.MAX_EXPIRE_SECONDS / 86400);
-    const hidden = platform() === 'android' ? 'hidden' : '';
     let submitting = false;
     return html`
       <send-signup-dialog
@@ -42,7 +41,7 @@ module.exports = function(trigger) {
             <input
               id="email-input"
               type="email"
-              class="${hidden} border rounded-lg w-full px-2 py-1 h-12 mb-3 text-lg text-grey-70 leading-loose dark:bg-grey-80 dark:text-white"
+              class="border rounded-lg w-full px-2 py-1 h-12 mb-3 text-lg text-grey-70 leading-loose dark:bg-grey-80 dark:text-white"
               placeholder=${state.translate('emailPlaceholder')}
             />
             <input

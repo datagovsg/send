@@ -7,8 +7,6 @@ const expressWs = require('@dannycoates/express-ws');
 const morgan = require('morgan');
 const config = require('../config');
 
-const ID_REGEX = '([0-9a-fA-F]{10, 16})';
-
 module.exports = function(app, devServer) {
   const wsapp = express();
   expressWs(wsapp, null, { perMessageDeflate: false });
@@ -18,27 +16,6 @@ module.exports = function(app, devServer) {
 
   assets.setMiddleware(devServer.middleware);
   app.use(morgan('dev', { stream: process.stderr }));
-  function android(req, res) {
-    const index = devServer.middleware.fileSystem
-      .readFileSync(devServer.middleware.getFilenameFromUrl('/android.html'))
-      .toString()
-      .replace(
-        '<base href="file:///android_asset/" />',
-        '<base href="http://localhost:8080/" />'
-      );
-    res.set('Content-Type', 'text/html');
-    res.send(index);
-  }
-  if (process.env.ANDROID) {
-    // map all html routes to the android index.html
-    app.get('/', android);
-    app.get('/legal', android);
-    app.get(`/share/:id${ID_REGEX}`, android);
-    app.get('/completed', android);
-    app.get('/preferences', android);
-    app.get('/options', android);
-    app.get('/oauth', android);
-  }
   routes(app);
   tests(app);
   // webpack-dev-server routes haven't been added yet

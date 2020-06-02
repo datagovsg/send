@@ -16,12 +16,7 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   options.plugins.push(
     require('@fullhuman/postcss-purgecss')({
-      content: [
-        './app/*.js',
-        './app/ui/*.js',
-        './android/*.js',
-        './android/pages/*.js'
-      ],
+      content: ['./app/*.js', './app/ui/*.js'],
       extractors: [
         {
           extractor: TailwindExtractor,

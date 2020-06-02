@@ -10,9 +10,6 @@ describe('Firefox Send homepage', function() {
 
   beforeEach(function() {
     homePage.open();
-    if (process.env.ANDROID) {
-      this.skip();
-    }
   });
 
   it('should have the right title', function() {
