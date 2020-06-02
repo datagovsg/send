@@ -48,20 +48,4 @@ describe('Language Middleware', function() {
     assert.equal(req.language, 'en-US');
     sinon.assert.calledOnce(next);
   });
-
-  it('prefers higher q values', function() {
-    const req = request('fa;q=0.5, it;q=0.9');
-    const next = sinon.stub();
-    langMiddleware(req, null, next);
-    assert.equal(req.language, 'it');
-    sinon.assert.calledOnce(next);
-  });
-
-  it('uses likely subtags', function() {
-    const req = request('es-MX');
-    const next = sinon.stub();
-    langMiddleware(req, null, next);
-    assert.equal(req.language, 'es-ES');
-    sinon.assert.calledOn(next);
-  });
 });
