@@ -1,5 +1,6 @@
 const path = require('path');
 const mkdirp = require('mkdirp');
+// eslint-disable-next-line node/no-extraneous-require
 const rimraf = require('rimraf');
 const dir = path.join(__dirname, 'integration', 'downloads');
 
