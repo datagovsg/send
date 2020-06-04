@@ -1,5 +1,5 @@
-# Firefox Send is a brand name and should not be localized.
-title = Firefox Send
+# Vault Send is a brand name and should not be localized.
+title = Vault Send
 siteFeedback = Feedback
 importingFile = Importing…
 encryptingFile = Encrypting…
@@ -18,13 +18,14 @@ unlockButtonLabel = Unlock
 downloadButtonLabel = Download
 downloadFinish = Download complete
 fileSizeProgress = ({ $partialSize } of { $totalSize })
-sendYourFilesLink = Try Firefox Send
+sendYourFilesLink = Try Vault Send
 errorPageHeader = Something went wrong!
 fileTooBig = That file is too big to upload. It should be less than { $size }
+fileInvalidExtension = A file '{ $file }' has an invalid type of '{ $type }' which is not allowed.
 linkExpiredAlt = Link expired
 notSupportedHeader = Your browser is not supported.
 notSupportedLink = Why is my browser not supported?
-notSupportedOutdatedDetail = Unfortunately this version of Firefox does not support the web technology that powers Firefox Send. You’ll need to update your browser.
+notSupportedOutdatedDetail = Unfortunately this version of Vault does not support the web technology that powers Vault Send. You’ll need to update your browser.
 updateFirefox = Update Firefox
 deletePopupCancel = Cancel
 deleteButtonHover = Delete
@@ -32,8 +33,8 @@ footerLinkLegal = Legal
 footerLinkPrivacy = Privacy
 footerLinkCookies = Cookies
 passwordTryAgain = Incorrect password. Try again.
-javascriptRequired = Firefox Send requires JavaScript
-whyJavascript = Why does Firefox Send require JavaScript?
+javascriptRequired = Vault Send requires JavaScript
+whyJavascript = Why does Vault Send require JavaScript?
 enableJavascript = Please enable JavaScript and try again.
 # A short representation of a countdown timer containing the number of hours and minutes remaining as digits, example "13h 47m"
 expiresHoursMinutes = { $hours }h { $minutes }m
@@ -46,14 +47,14 @@ passwordSetError = This password could not be set
 
 ## Send version 2 strings
 
-# Firefox Send, Send, Firefox, Mozilla are proper names and should not be localized
--send-brand = Firefox Send
+# Vault Send, Send, Firefox, Mozilla are proper names and should not be localized
+-send-brand = Vault Send
 -send-short-brand = Send
--firefox = Firefox
+-firefox = Chrome
 -mozilla = Mozilla
 
 introTitle = Simple, private file sharing
-introDescription = { -send-brand } lets you share files with end-to-end encryption and a link that automatically expires. So you can keep what you share private and make sure your stuff doesn’t stay online forever.
+introDescription = { -send-brand } lets you share files with end-to-end encryption and a link that automatically expires. So you can keep what you share private and make sure your stuff doesn’t stay on our servers forever.
 notifyUploadEncryptDone = Your file is encrypted and ready to send
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
 archiveExpiryInfo = Expires after { $downloadCount } or { $timespan }
@@ -86,11 +87,11 @@ fileSize = { $num }{ $units }
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 totalSize = Total size: { $size }
 # the next line after the colon contains a file name
-copyLinkDescription = Copy the link to share your file:
+copyLinkDescription = The link contains the decyption key. Share it only with those who should be allowed to download your file:
 copyLinkButton = Copy link
 downloadTitle = Download files
 downloadDescription = This file was shared via { -send-brand } with end-to-end encryption and a link that automatically expires.
-trySendDescription = Try { -send-brand } for simple, safe file sharing.
+trySendDescription = Intranet got you down?
 # count will always be > 10
 tooManyFiles = { $count ->
      [one] Only 1 file can be uploaded at a time.
@@ -102,7 +103,7 @@ tooManyArchives = { $count ->
     *[other] Only { $count } archives are allowed.
 }
 expiredTitle = This link has expired.
-notSupportedDescription = { -send-brand } will not work with this browser. { -send-short-brand } works best with the latest version of { -firefox }, and will work with the current version of most browsers.
+notSupportedDescription = { -send-brand } will not work with this browser. { -send-short-brand } works best with the latest version of { -firefox } or Edge.
 downloadFirefox = Download { -firefox }
 legalTitle = { -send-short-brand } Privacy Notice
 legalDateStamp = Version 1.0, dated March 12, 2019
@@ -110,9 +111,9 @@ legalDateStamp = Version 1.0, dated March 12, 2019
 expiresDaysHoursMinutes = { $days }d { $hours }h { $minutes }m
 addFilesButton = Select files to upload
 uploadButton = Upload
-# the first part of the string 'Drag and drop files or click to send up to 1GB'
+# the first part of the string 'Drag and drop files or click to send up to 2GB'
 dragAndDropFiles = Drag and drop files
-# the second part of the string 'Drag and drop files or click to send up to 1GB'
+# the second part of the string 'Drag and drop files or click to send up to 2GB'
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
 orClickWithSize = or click to send up to { $size }
 addPassword = Protect with password
@@ -135,7 +136,6 @@ okButton = OK
 downloadingTitle = Downloading
 noStreamsWarning = This browser might not be able to decrypt a file this big.
 noStreamsOptionCopy = Copy the link to open in another browser
-noStreamsOptionFirefox = Try our favorite browser
 noStreamsOptionDownload = Continue with this browser
 downloadFirefoxPromo = { -send-short-brand } is brought to you by the all-new { -firefox }.
 # the next line after the colon contains a file name

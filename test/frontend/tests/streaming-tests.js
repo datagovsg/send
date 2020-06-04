@@ -16,7 +16,7 @@ const keystr = 'yqdlZ-tYemfogSmv7Ws5PQ';
 
 const buffer = Buffer.from(str);
 const params = {
-  version: 'aes128gcm',
+  version: 'aes256gcm',
   rs: rs,
   salt: testSalt,
   keyid: '',

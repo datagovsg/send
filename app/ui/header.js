@@ -16,31 +16,47 @@ class Header extends Component {
     this.account.render();
     return false;
   }
+
   createElement() {
     const title =
       platform() === 'android'
         ? html`
             <a class="flex flex-row items-center">
               <img src="${assets.get('icon.svg')}" />
-              <svg class="w-48">
-                <use xlink:href="${assets.get('wordmark.svg')}#logo" />
-              </svg>
             </a>
           `
         : html`
-            <a class="flex flex-row items-center" href="/">
-              <img
-                alt="${this.state.translate('title')}"
-                src="${assets.get('icon.svg')}"
-              />
-              <svg class="w-48 md:w-64">
-                <use xlink:href="${assets.get('wordmark.svg')}#logo" />
-              </svg>
-            </a>
+            <div class="flex">
+              <a
+                class="flex flex-row items-center"
+                href="${this.state.vaultFrontendUrl ||
+                  window.DEFAULTS.LOGIN_URL ||
+                  '/'}"
+              >
+                <img
+                  alt="${this.state.translate('title')}"
+                  src="${assets.get('icon.svg')}"
+                />
+              </a>
+            </div>
+            <div class="main-nav flex">
+              <a
+                href="${this.state.vaultFrontendUrl ||
+                  window.DEFAULTS.LOGIN_URL ||
+                  '/'}"
+              >
+                <i class="bx bx-arrow-back"></i>
+                <div>Back</div>
+              </a>
+              <a href="/vault-logout">
+                <i class="bx bx-exit"></i>
+                <div>Logout</div>
+              </a>
+            </div>
           `;
     return html`
       <header
-        class="main-header relative flex-none flex flex-row items-center justify-between w-full px-6 md:px-8 h-16 md:h-24 z-20 bg-transparent"
+        class="main-header relative flex-none flex flex-row w-full z-20 bg-white"
       >
         ${title} ${this.account.render()}
       </header>

@@ -7,16 +7,6 @@ const geoip = config.ip_db
   ? require('fxa-geodb')({ dbPath: config.ip_db })
   : () => ({});
 
-const HOUR = 1000 * 60 * 60;
-
-function truncateToHour(timestamp) {
-  return Math.floor(timestamp / HOUR) * HOUR;
-}
-
-function orderOfMagnitude(n) {
-  return Math.floor(Math.log10(n));
-}
-
 function userId(fileId, ownerId) {
   const hash = crypto.createHash('sha256');
   hash.update(fileId);
@@ -33,67 +23,36 @@ function location(ip) {
 }
 
 function statUploadEvent(data) {
-  const loc = location(data.ip);
   const event = {
-    session_id: -1,
-    country: loc.country,
-    region: loc.state,
-    user_id: userId(data.id, data.owner),
-    app_version: pkg.version,
-    time: truncateToHour(Date.now()),
-    event_type: 'server_upload',
-    user_properties: {
-      download_limit: data.dlimit,
-      time_limit: data.timeLimit,
-      size: orderOfMagnitude(data.size),
-      anonymous: data.anonymous
-    },
-    event_properties: {
-      agent: data.agent
-    },
-    event_id: 0
+    cookie: data.cookie,
+    action: `uploaded secure dataset`,
+    resource: `${userId(data.id, data.owner)}, valid for ${
+      data.dlimit
+    } downloads and ${data.timeLimit} seconds`
   };
-  return sendBatch([event]);
+  return sendBatch(event);
 }
 
 function statDownloadEvent(data) {
-  const loc = location(data.ip);
   const event = {
-    session_id: -1,
-    country: loc.country,
-    region: loc.state,
-    user_id: userId(data.id, data.owner),
-    app_version: pkg.version,
-    time: truncateToHour(Date.now()),
-    event_type: 'server_download',
-    event_properties: {
-      agent: data.agent,
-      download_count: data.download_count,
-      ttl: data.ttl
-    },
-    event_id: data.download_count
+    cookie: data.cookie,
+    action: `downloaded secure dataset`,
+    resource: `${userId(data.id, data.owner)}, which is download #${
+      data.download_count
+    } and expires in ${data.ttl / 1000} seconds`
   };
-  return sendBatch([event]);
+  return sendBatch(event);
 }
 
 function statDeleteEvent(data) {
-  const loc = location(data.ip);
   const event = {
-    session_id: -1,
-    country: loc.country,
-    region: loc.state,
-    user_id: userId(data.id, data.owner),
-    app_version: pkg.version,
-    time: truncateToHour(Date.now()),
-    event_type: 'server_delete',
-    event_properties: {
-      agent: data.agent,
-      download_count: data.download_count,
-      ttl: data.ttl
-    },
-    event_id: data.download_count + 1
+    cookie: data.cookie,
+    action: `deleted secure dataset`,
+    resource: `${userId(data.id, data.owner)} after ${
+      data.download_count
+    } downloads and with ${data.ttl / 1000} seconds left`
   };
-  return sendBatch([event]);
+  return sendBatch(event);
 }
 
 function clientEvent(event, ua, language, session_id, deltaT, platform, ip) {
@@ -149,22 +108,23 @@ function clientEvent(event, ua, language, session_id, deltaT, platform, ip) {
   };
 }
 
-async function sendBatch(events, timeout = 1000) {
-  if (!config.amplitude_id) {
-    return 200;
-  }
+async function sendBatch(event) {
+  console.log({ event });
   try {
-    const result = await fetch('https://api.amplitude.com/batch', {
+    const result = await fetch(config.logging_url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: event.cookie
+      },
       body: JSON.stringify({
-        api_key: config.amplitude_id,
-        events
-      }),
-      timeout
+        action: event.action,
+        resource: event.resource
+      })
     });
     return result.status;
   } catch (e) {
+    console.log(e);
     return 500;
   }
 }
@@ -173,6 +133,5 @@ module.exports = {
   statUploadEvent,
   statDownloadEvent,
   statDeleteEvent,
-  clientEvent,
-  sendBatch
+  clientEvent
 };

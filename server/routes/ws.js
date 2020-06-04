@@ -11,8 +11,58 @@ const { Transform } = require('stream');
 
 const log = mozlog('send.upload');
 
+const redisClient = require('redis').createClient(config.redis_session_url);
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const IS_DEV = config.env === 'development';
+
+const vaultSessionMgmt = session({
+  secret: config.cookie_secret,
+  resave: false,
+  saveUninitialized: false,
+  rolling: true,
+  unset: 'destroy',
+  name: 'SID',
+  store: new RedisStore({ client: redisClient }),
+  cookie: {
+    path: '/',
+    domain: config.cookie_domain,
+    maxAge: 20 * 60 * 1000,
+    httpOnly: true,
+    sameSite: true,
+    secure: IS_DEV
+  }
+});
+
 module.exports = function(ws, req) {
   let fileStream;
+  let message;
+  let vaultLoggedIn;
+
+  vaultSessionMgmt(req, {}, async () => {
+    console.log(`Session: ${req.session.email}`);
+
+    if (req.session.email) {
+      vaultLoggedIn = true;
+    } else {
+      vaultLoggedIn = false;
+    }
+
+    if (message) {
+      console.log(`respondingToMessage in vaultSessionMgmt`);
+      await respondToMessage();
+    }
+  });
+
+  ws.once('message', async freshMessage => {
+    console.log(`Message incoming: ${freshMessage}`);
+    message = freshMessage;
+
+    if (vaultLoggedIn !== undefined) {
+      console.log(`respondingToMessage in persistMessageAndCheckAuth`);
+      await respondToMessage();
+    }
+  });
 
   ws.on('close', e => {
     if (e !== 1000 && fileStream !== undefined) {
@@ -20,7 +70,7 @@ module.exports = function(ws, req) {
     }
   });
 
-  ws.once('message', async function(message) {
+  const respondToMessage = async () => {
     try {
       const newId = crypto.randomBytes(8).toString('hex');
       const owner = crypto.randomBytes(10).toString('hex');
@@ -40,10 +90,10 @@ module.exports = function(ws, req) {
       const maxDownloads = user
         ? config.max_downloads
         : config.anon_max_downloads;
-
       if (
         !metadata ||
         !auth ||
+        !vaultLoggedIn ||
         timeLimit <= 0 ||
         timeLimit > maxExpireSeconds ||
         dlimit > maxDownloads
@@ -101,6 +151,7 @@ module.exports = function(ws, req) {
         // up storage, possibly with an exception that we can catch.
         ws.send(JSON.stringify({ ok: true }));
         statUploadEvent({
+          cookie: req.headers.cookie,
           id: newId,
           ip: req.ip,
           owner,
@@ -122,5 +173,5 @@ module.exports = function(ws, req) {
       }
     }
     ws.close();
-  });
+  };
 };

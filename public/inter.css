@@ -159,3 +159,16 @@
   src: url('Inter-BlackItalic.woff2') format('woff2'),
     url('Inter-BlackItalic.woff') format('woff');
 }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url('SourceSansPro.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 600;
+  src: url('SourceSansPro-SemiBold.woff2') format('woff2');
+}

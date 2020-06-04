@@ -9,6 +9,11 @@ const language = require('../middleware/language');
 const pages = require('./pages');
 const filelist = require('./filelist');
 const clientConstants = require('../clientConstants');
+const cookieParser = require('cookie-parser');
+
+const redisClient = require('redis').createClient(config.redis_session_url);
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
 
 const IS_DEV = config.env === 'development';
 const ID_REGEX = '([0-9a-fA-F]{10,16})';
@@ -35,22 +40,8 @@ module.exports = function(app) {
       helmet.contentSecurityPolicy({
         directives: {
           defaultSrc: ["'self'"],
-          connectSrc: [
-            "'self'",
-            'wss://*.dev.lcip.org',
-            'wss://*.send.nonprod.cloudops.mozgcp.net',
-            'wss://send.firefox.com',
-            'https://*.dev.lcip.org',
-            'https://accounts.firefox.com',
-            'https://*.accounts.firefox.com',
-            'https://sentry.prod.mozaws.net'
-          ],
-          imgSrc: [
-            "'self'",
-            'https://*.dev.lcip.org',
-            'https://firefoxusercontent.com',
-            'https://secure.gravatar.com'
-          ],
+          connectSrc: ["'self'"],
+          imgSrc: ["'self'"],
           scriptSrc: [
             "'self'",
             function(req) {
@@ -75,22 +66,92 @@ module.exports = function(app) {
   });
   app.use(bodyParser.json());
   app.use(bodyParser.text());
-  app.get('/', language, pages.index);
+  app.use(cookieParser());
+  // Cookies don't get sent, so that's why remove auth requirement for manifest
+  app.get('/app.webmanifest', language, require('./webmanifest'));
+
+  // heart beat too
+  app.get('/__lbheartbeat__', function(req, res) {
+    res.sendStatus(200);
+  });
+
+  app.get('/__heartbeat__', async (req, res) => {
+    try {
+      await storage.ping();
+      res.sendStatus(200);
+    } catch (e) {
+      console.log('heartbeat failed', e);
+      res.sendStatus(500);
+    }
+  });
+  // everything else below will only be accessible with auth
+
+  const vaultSessionMgmt = session({
+    secret: config.cookie_secret,
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    unset: 'destroy',
+    name: 'SID',
+    store: new RedisStore({ client: redisClient }),
+    cookie: {
+      path: '/',
+      domain: config.cookie_domain,
+      maxAge: 20 * 60 * 1000,
+      httpOnly: true,
+      sameSite: true,
+      secure: IS_DEV
+    }
+  });
+
+  const sessionIsValid = (req, res, next) => {
+    if (req.session.email) {
+      return next();
+    } else {
+      // The Regex below removes '/download/' from the '/download/download_id/' URL
+      // It will be added back by the Vault app, therefore only allowing redirection
+      // to the Send landing page or '/download/*' pages.
+      const download_id = req.originalUrl.match('(?<=/download/).*$');
+      // If it is a redirect to a download link, append download_id and # tag
+      // A valid Vault Send download link requires /download/download_id/#download_tag
+      const redirect_uri = download_id
+        ? `${config.LOGIN_URL}/login?redirect_key=${config.SEND_FRONTEND_REDIRECT_KEY}&download_id=${download_id}`
+        : `${config.LOGIN_URL}/login?redirect_key=${config.SEND_FRONTEND_REDIRECT_KEY}`;
+      return res.redirect(redirect_uri);
+    }
+  };
+
+  app.get('/', vaultSessionMgmt, sessionIsValid, language, pages.index);
   app.get('/config', function(req, res) {
     res.json(clientConstants);
   });
   app.get('/error', language, pages.blank);
   app.get('/oauth', language, pages.blank);
-  app.get('/legal', language, pages.legal);
-  app.get('/login', language, pages.index);
-  app.get('/app.webmanifest', language, require('./webmanifest'));
-  app.get(`/download/:id${ID_REGEX}`, language, pages.download);
+  app.get(
+    `/download/:id${ID_REGEX}`,
+    vaultSessionMgmt,
+    sessionIsValid,
+    language,
+    pages.download
+  );
   app.get('/unsupported/:reason', language, pages.unsupported);
-  app.get(`/api/download/:id${ID_REGEX}`, auth.hmac, require('./download'));
+  app.get(
+    `/api/download/:id${ID_REGEX}`,
+    vaultSessionMgmt,
+    sessionIsValid,
+    auth.hmac,
+    require('./download')
+  );
   app.get(
     `/api/download/blob/:id${ID_REGEX}`,
     auth.hmac,
     require('./download')
+  );
+  app.get(
+    `/api/auth/logout`,
+    vaultSessionMgmt,
+    sessionIsValid,
+    require('./logout')
   );
   app.get(`/api/exists/:id${ID_REGEX}`, require('./exists'));
   app.get(`/api/metadata/:id${ID_REGEX}`, auth.hmac, require('./metadata'));
@@ -110,18 +171,5 @@ module.exports = function(app) {
   app.get('/__version__', function(req, res) {
     // eslint-disable-next-line node/no-missing-require
     res.sendFile(require.resolve('../../dist/version.json'));
-  });
-
-  app.get('/__lbheartbeat__', function(req, res) {
-    res.sendStatus(200);
-  });
-
-  app.get('/__heartbeat__', async (req, res) => {
-    try {
-      await storage.ping();
-      res.sendStatus(200);
-    } catch (e) {
-      res.sendStatus(500);
-    }
   });
 };

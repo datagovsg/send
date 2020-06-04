@@ -1,18 +1,10 @@
 const html = require('choo/html');
-const Promo = require('./promo');
 const Header = require('./header');
 const Footer = require('./footer');
 
 function banner(state) {
   if (state.layout) {
     return; // server side
-  }
-  const show =
-    !state.capabilities.standalone &&
-    !state.route.startsWith('/unsupported/') &&
-    state.locale === 'en-US';
-  if (show) {
-    return state.cache(Promo, 'promo').render();
   }
 }
 

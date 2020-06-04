@@ -438,3 +438,10 @@ export async function getConstants() {
 
   throw new Error(response.status);
 }
+
+export async function invalidateVaultSession() {
+  const response = await fetch(getApiUrl(`/api/auth/logout`), {
+    method: 'GET'
+  });
+  return response.ok;
+}

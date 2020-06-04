@@ -1,4 +1,29 @@
-# [![Firefox Send](./assets/icon.svg)](https://send.firefox.com/) Firefox Send
+# Vault Send README
+
+## Local deployment guide
+
+To deploy this project locally for development purposes, follow the steps below.
+
+### Prerequisites
+
+- The Vault frontend and backend must both be running before Vault Send is launched.
+
+### Steps
+
+1. Install the required packages: `npm install`
+2. Create a `local.env` file based on the `env_example` template file
+3. Run the appplication: `npm run dev`
+
+### Note for Windows users
+
+If you are on Windows, ensure that you are using [Git Bash](https://git-scm.com/downloads) because the `npm run` scripts contain Bash shell commands.
+
+You will also need to configure npm to use Git Bash:  
+`npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
+
+# Original README
+
+## [![Firefox Send](./assets/icon.svg)](https://send.firefox.com/) Firefox Send
 
 [![CircleCI](https://img.shields.io/circleci/project/github/mozilla/send.svg)](https://circleci.com/gh/mozilla/send)
 

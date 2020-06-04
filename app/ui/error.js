@@ -3,6 +3,7 @@ const assets = require('../../common/assets');
 const modal = require('./modal');
 
 module.exports = function(state, emit) {
+  console.log(state);
   return html`
     <main class="main">
       ${state.modal && modal(state, emit)}

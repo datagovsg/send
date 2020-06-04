@@ -8,6 +8,7 @@ import copyDialog from './ui/copyDialog';
 import shareDialog from './ui/shareDialog';
 import signupDialog from './ui/signupDialog';
 import surveyDialog from './ui/surveyDialog';
+import { invalidateVaultSession } from './api';
 
 export default function(state, emitter) {
   let lastRender = 0;
@@ -32,11 +33,11 @@ export default function(state, emitter) {
     render();
   }
 
-  emitter.on('DOMContentLoaded', () => {
+  emitter.on('DOMContentLoaded', async () => {
     document.addEventListener('blur', () => (updateTitle = true));
     document.addEventListener('focus', () => {
       updateTitle = false;
-      emitter.emit('DOMTitleChange', 'Firefox Send');
+      emitter.emit('DOMTitleChange', 'Vault Send');
     });
     checkFiles();
   });
@@ -89,6 +90,33 @@ export default function(state, emitter) {
     if (files.length < 1) {
       return;
     }
+
+    const fileTypes = state.LIMITS.ALLOWED_FILE_TYPES;
+
+    for (let i = 0; i < files.length; i++) {
+      // Check for valid MIME type
+      let fileType = files[i].type.toLowerCase();
+      let isInvalidType = true;
+      for (let j = 0; j < fileTypes.length; j++) {
+        if (fileType === fileTypes[j]) {
+          isInvalidType = false;
+          continue;
+        }
+      }
+
+      if (isInvalidType) {
+        let fileName = files[i].name;
+        state.modal = okDialog(
+          state.translate('fileInvalidExtension', {
+            file: fileName,
+            type: fileType
+          })
+        );
+        render();
+        return;
+      }
+    }
+
     const maxSize = state.user.maxSize;
     try {
       state.archive.addFiles(
@@ -127,10 +155,20 @@ export default function(state, emitter) {
     try {
       await state.user.finishLogin(code, oauthState);
       await state.user.syncFileList();
-      emitter.emit('replaceState', '/');
+      emitter.emit('replaceState', '/download');
     } catch (e) {
       emitter.emit('replaceState', '/error');
       setTimeout(render);
+    }
+  });
+
+  emitter.on('vaultLogout', async () => {
+    try {
+      await invalidateVaultSession();
+      // Force reload the application to trigger vaultSessionMgmt again
+      window.location.replace('/');
+    } catch (e) {
+      return emitter.emit('replaceState', '/error');
     }
   });
 

@@ -24,6 +24,7 @@ module.exports = async function(req, res) {
       const dlimit = meta.dlimit;
       const ttl = await storage.ttl(id);
       statDownloadEvent({
+        cookie: req.headers.cookie,
         id,
         ip: req.ip,
         owner: meta.owner,

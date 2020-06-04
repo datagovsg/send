@@ -11,11 +11,13 @@ module.exports = {
     MAX_DOWNLOADS: config.max_downloads,
     MAX_EXPIRE_SECONDS: config.max_expire_seconds,
     MAX_FILES_PER_ARCHIVE: config.max_files_per_archive,
-    MAX_ARCHIVES_PER_USER: config.max_archives_per_user
+    MAX_ARCHIVES_PER_USER: config.max_archives_per_user,
+    ALLOWED_FILE_TYPES: config.allowed_file_types
   },
   DEFAULTS: {
     DOWNLOAD_COUNTS: config.download_counts,
     EXPIRE_TIMES_SECONDS: config.expire_times_seconds,
-    EXPIRE_SECONDS: config.default_expire_seconds
+    EXPIRE_SECONDS: config.default_expire_seconds,
+    LOGIN_URL: config.LOGIN_URL
   }
 };

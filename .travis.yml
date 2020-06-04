@@ -1,0 +1,33 @@
+language: node_js
+node_js:
+- '10'
+branches:
+  only:
+  - master
+jobs:
+  include:
+  - before_script:
+    - npm install
+    - export ELASTICBEANSTALK_DEPLOYMENT_ZIP_FILE=$TRAVIS_COMMIT_$(date +%Y_%m_%d_%H_%M_%S).zip
+    - export ELASTIC_BEANSTALK_DESCRIPTION=$TRAVIS_COMMIT_MESSAGE && echo $ELASTIC_BEANSTALK_DESCRIPTION
+    - export ELASTIC_BEANSTALK_LABEL=$TRAVIS_BRANCH-$TRAVIS_COMMIT && echo $ELASTIC_BEANSTALK_LABEL
+    script:
+    - npm run build
+    - zip -r $ELASTICBEANSTALK_DEPLOYMENT_ZIP_FILE . -x '*.git*' -q
+    deploy:
+    - provider: elasticbeanstalk
+      access_key_id: "$AWS_ACCESS_KEY_ID_FOR_DEPLOYMENT"
+      secret_access_key: "$AWS_SECRET_ACCESS_KEY_FOR_DEPLOYMENT"
+      region: ap-southeast-1
+      zip_file: "$ELASTICBEANSTALK_DEPLOYMENT_ZIP_FILE"
+      app: vaultgovsg-send
+      env: send-vaultgovsg-staging
+      bucket_name: send-vaultgovsg-staging-elasticbeanstalk
+      edge: true
+      wait_until_deployed: true
+      wait_until_deployed_timeout: 1200 # 20 mins
+      on:
+        branch: master
+notifications:
+  slack:
+    secure: ZAZ1WNGgePUp0x8apwfnQ5jqr6U3TP/BB5uepm8H4UzOtpKf9nLdRgbzGyWJcSxywytOq17RnSze+E8FsUflWxDyT/JozmXvOsKTkvHFlr/tbw684ltL1HyE38PrDFwwIFSMGKn79G3y7pZw/k1IcDjcIEBnku3b0UxCPRrv3jbKZjyhclqO4nptlJ8AVC0BNLnjQS3Zm3NuW/J43fvzudbUC6Ua4FJZqELPKsazQ6iLrNZLNKwygJb18HHCy3I39d4/0vDr8WymXkMPfbAh+Xd6H7r8UyvN4venfFDRZl5Hn/+0c6CkhU7LaJ0ZmSZyvtBPi1EAlK9V4rAmZIxsgBlQTuAg10b4rYa88YVkgunQWMIoNRktXoTK7M1iC+Po8hoeUsgb++HOHpTeeHkOsGJOhBFyOt6LQ+u2M1PIRs2Eyo9N9UHQCWWPYYK3TwuZuAjXvZGyOBFQ9o/8U1hL52pR3aas76IPBA7FYkOtNp4VX2MPHuwGxKblgZcGv507+Yc2A6zjE6C/Ja15TC7ND3mrwrt7ZGBLVm25DKSZRReMdq8/Lffuqfs4btEmLnaNopOVIA0U5IjGoUWArrDNsLnq62czhG7i1qB6mMpxDmAjlI0wYW/KA0WsBoUgL8lxEudeZsWylcf49pisHzAIY4o0DGS9/d2lL3rcY7PCXJo=

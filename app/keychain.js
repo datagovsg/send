@@ -29,7 +29,7 @@ export default class Keychain {
         secretKey,
         {
           name: 'AES-GCM',
-          length: 128
+          length: 256
         },
         false,
         ['encrypt', 'decrypt']
@@ -74,7 +74,7 @@ export default class Keychain {
           {
             name: 'PBKDF2',
             salt: encoder.encode(shareUrl),
-            iterations: 100,
+            iterations: 100000,
             hash: 'SHA-256'
           },
           passwordKey,
