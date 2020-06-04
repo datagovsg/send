@@ -6,9 +6,8 @@
 
 To deploy this project locally for development purposes, follow the steps below.
 
-### Prerequisites
-
-- The Vault frontend and backend must both be running before Vault Send is launched.
+### Prerequisite
+The Vault frontend and backend must both be running before Vault Send is launched.
 
 ### Steps
 
@@ -25,4 +24,4 @@ You will also need to configure npm to use Git Bash:
 
 ### Original Mozilla Send
 
-Visit the original [Mozilla/Send](https://github.com/mozilla/send) repository [here](https://github.com/mozilla/send).
+View the original README document at the [Mozilla/Send](https://github.com/mozilla/send) repository.
