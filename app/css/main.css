@@ -184,10 +184,6 @@ footer {
   align-items: center;
 }
 
-.footerContainer a:hover, .footerContainer a:hover * {
-  text-decoration: underline;
-}
-
 .leftFooter {
   width: 50%;
   display: block;
@@ -206,6 +202,10 @@ footer {
 }
 
 .rightFooter a:hover {
+  text-decoration: underline;
+}
+
+.footerContainer a:hover, .footerContainer a:hover * {
   text-decoration: underline;
 }
 
