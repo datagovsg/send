@@ -29,9 +29,7 @@ class Header extends Component {
             <div class="flex">
               <a
                 class="flex flex-row items-center"
-                href="${this.state.vaultFrontendUrl ||
-                  window.DEFAULTS.LOGIN_URL ||
-                  '/'}"
+                href="${window.DEFAULTS.LOGIN_URL}"
               >
                 <img
                   alt="${this.state.translate('title')}"
@@ -40,11 +38,7 @@ class Header extends Component {
               </a>
             </div>
             <div class="main-nav flex">
-              <a
-                href="${this.state.vaultFrontendUrl ||
-                  window.DEFAULTS.LOGIN_URL ||
-                  '/'}"
-              >
+              <a href="${window.DEFAULTS.LOGIN_URL}">
                 <i class="bx bx-arrow-back"></i>
                 <div>Return to Vault</div>
               </a>
