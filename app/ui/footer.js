@@ -1,5 +1,5 @@
-const html = require('choo/html');
-const Component = require('choo/component');
+const html = require("choo/html");
+const Component = require("choo/component");
 
 class Footer extends Component {
   constructor(name, state) {
@@ -16,16 +16,21 @@ class Footer extends Component {
       <footer>
         <div class="footerContainer">
           <div class="leftFooter">
-            © 2020 Open Government Products - A Division of GovTech
+            <a
+              href="${this.state.vaultFrontendUrl}/about"
+              title="Find out more about us."
+            >
+              © 2020 Open Government Products
+            </a>
           </div>
           <div class="rightFooter">
             <a
               href="${this.state.vaultFrontendUrl ||
                 window.DEFAULTS.LOGIN_URL ||
-                '/'}"
+                "/"}"
               rel="noopener noreferrer"
-              >Return to Vault
-              <i class="bx bx-link-external"></i>
+            >
+              <i class="bx bx-arrow-back"></i> Return to Vault
             </a>
           </div>
         </div>
