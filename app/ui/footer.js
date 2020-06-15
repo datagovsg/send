@@ -17,14 +17,17 @@ class Footer extends Component {
         <div class="footerContainer">
           <div class="leftFooter">
             <a
-              href="${window.DEFAULTS.LOGIN_URL}/about"
+              href="${window.DEFAULTS.LOGIN_URL || ''}/about"
               title="Find out more about us."
             >
               © 2020 Open Government Products
             </a>
           </div>
           <div class="rightFooter">
-            <a href="${window.DEFAULTS.LOGIN_URL}" rel="noopener noreferrer">
+            <a
+              href="${window.DEFAULTS.LOGIN_URL || ''}"
+              rel="noopener noreferrer"
+            >
               <i class="bx bx-arrow-back"></i> Return to Vault
             </a>
           </div>
