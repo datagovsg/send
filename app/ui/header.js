@@ -46,7 +46,7 @@ class Header extends Component {
                   '/'}"
               >
                 <i class="bx bx-arrow-back"></i>
-                <div>Back</div>
+                <div>Return to Vault</div>
               </a>
               <a href="/vault-logout">
                 <i class="bx bx-exit"></i>
