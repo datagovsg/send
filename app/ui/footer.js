@@ -16,7 +16,14 @@ class Footer extends Component {
       <footer>
         <div class="footerContainer">
           <div class="leftFooter">
-            © 2020 Open Government Products - A Division of GovTech
+            <a
+              href="${this.state.vaultFrontendUrl ||
+                window.DEFAULTS.LOGIN_URL ||
+                ''}/about"
+              rel="noopener noreferrer"
+            >
+              © 2020 Open Government Products
+            </a>
           </div>
           <div class="rightFooter">
             <a
@@ -24,8 +31,8 @@ class Footer extends Component {
                 window.DEFAULTS.LOGIN_URL ||
                 '/'}"
               rel="noopener noreferrer"
-              >Return to Vault
-              <i class="bx bx-link-external"></i>
+            >
+              <i class="bx bx-arrow-back"></i> Return to Vault
             </a>
           </div>
         </div>

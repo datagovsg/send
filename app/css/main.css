@@ -205,6 +205,10 @@ footer {
   text-decoration: underline;
 }
 
+.footerContainer a:hover, .footerContainer a:hover * {
+  text-decoration: underline;
+}
+
 .intro {
   max-width: 100%;
   height: unset;
