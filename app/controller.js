@@ -90,33 +90,6 @@ export default function(state, emitter) {
     if (files.length < 1) {
       return;
     }
-
-    const fileTypes = state.LIMITS.ALLOWED_FILE_TYPES;
-
-    for (let i = 0; i < files.length; i++) {
-      // Check for valid MIME type
-      let fileType = files[i].type.toLowerCase();
-      let isInvalidType = true;
-      for (let j = 0; j < fileTypes.length; j++) {
-        if (fileType === fileTypes[j]) {
-          isInvalidType = false;
-          continue;
-        }
-      }
-
-      if (isInvalidType) {
-        let fileName = files[i].name;
-        state.modal = okDialog(
-          state.translate('fileInvalidExtension', {
-            file: fileName,
-            type: fileType
-          })
-        );
-        render();
-        return;
-      }
-    }
-
     const maxSize = state.user.maxSize;
     try {
       state.archive.addFiles(
