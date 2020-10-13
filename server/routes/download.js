@@ -19,6 +19,7 @@ module.exports = async function(req, res) {
     fileStream.pipe(res).on('finish', async () => {
       console.log('filestream pipe has finished');
       if (cancelled) {
+        console.log('damn son you were cancelled');
         return;
       }
 
@@ -41,8 +42,10 @@ module.exports = async function(req, res) {
           await storage.incrementField(id, 'dl');
         }
       } catch (e) {
+        console.log('you have faced some sort of an error here', e);
         log.info('StorageError:', id);
       }
+      console.log('okay the entire thing is done');
     });
   } catch (e) {
     res.sendStatus(404);
