@@ -109,7 +109,6 @@ function clientEvent(event, ua, language, session_id, deltaT, platform, ip) {
 }
 
 async function sendBatch(event) {
-  console.log({ event });
   try {
     const result = await fetch(config.logging_url, {
       method: 'POST',
@@ -121,6 +120,10 @@ async function sendBatch(event) {
         action: event.action,
         resource: event.resource
       })
+    });
+    console.log({
+      action: event.action,
+      resource: event.resource
     });
     return result.status;
   } catch (e) {
