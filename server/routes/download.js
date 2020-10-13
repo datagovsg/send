@@ -11,11 +11,13 @@ module.exports = async function(req, res) {
     let cancelled = false;
 
     req.on('close', () => {
+      console.log('download request has been closed, destroying');
       cancelled = true;
       fileStream.destroy();
     });
 
     fileStream.pipe(res).on('finish', async () => {
+      console.log('filestream pipe has finished');
       if (cancelled) {
         return;
       }
