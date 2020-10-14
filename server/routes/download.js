@@ -9,6 +9,9 @@ module.exports = async function(req, res) {
     const meta = req.meta;
     const fileStream = await storage.get(id);
     let cancelled = false;
+    fileStream.on('error', error => {
+      console.log('we have a filestream error right now', error);
+    });
 
     req.on('close', () => {
       console.log('download request has been closed, destroying');
@@ -16,37 +19,42 @@ module.exports = async function(req, res) {
       fileStream.destroy();
     });
 
-    fileStream.pipe(res).on('finish', async () => {
-      console.log('filestream pipe has finished');
-      if (cancelled) {
-        console.log('damn son you were cancelled');
-        return;
-      }
-
-      const dl = meta.dl + 1;
-      const dlimit = meta.dlimit;
-      const ttl = await storage.ttl(id);
-      statDownloadEvent({
-        cookie: req.headers.cookie,
-        id,
-        ip: req.ip,
-        owner: meta.owner,
-        download_count: dl,
-        ttl,
-        agent: req.ua.browser.name || req.ua.ua.substring(0, 6)
-      });
-      try {
-        if (dl >= dlimit) {
-          await storage.del(id);
-        } else {
-          await storage.incrementField(id, 'dl');
+    fileStream
+      .pipe(res)
+      .on('finish', async () => {
+        console.log('filestream pipe has finished');
+        if (cancelled) {
+          console.log('damn son you were cancelled');
+          return;
         }
-      } catch (e) {
-        console.log('you have faced some sort of an error here', e);
-        log.info('StorageError:', id);
-      }
-      console.log('okay the entire thing is done');
-    });
+
+        const dl = meta.dl + 1;
+        const dlimit = meta.dlimit;
+        const ttl = await storage.ttl(id);
+        statDownloadEvent({
+          cookie: req.headers.cookie,
+          id,
+          ip: req.ip,
+          owner: meta.owner,
+          download_count: dl,
+          ttl,
+          agent: req.ua.browser.name || req.ua.ua.substring(0, 6)
+        });
+        try {
+          if (dl >= dlimit) {
+            await storage.del(id);
+          } else {
+            await storage.incrementField(id, 'dl');
+          }
+        } catch (e) {
+          console.log('you have faced some sort of an error here', e);
+          log.info('StorageError:', id);
+        }
+        console.log('okay the entire thing is done');
+      })
+      .on('error', error => {
+        console.log('piping to response threw us an error', error);
+      });
   } catch (e) {
     res.sendStatus(404);
   }
