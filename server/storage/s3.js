@@ -5,6 +5,8 @@ const s3 = new AWS.S3({
   }
 });
 
+console.log({ s3 });
+
 class S3Storage {
   constructor(config, log) {
     this.bucket = config.s3_bucket;
