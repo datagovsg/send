@@ -10,11 +10,13 @@ module.exports = async function(req, res) {
     const fileStream = await storage.get(id);
     let cancelled = false;
     fileStream.on('error', error => {
-      console.log('we have a filestream error right now', error);
+      console.log('file streaming error from S3 to server:\n', error);
     });
 
     req.on('close', () => {
-      console.log('download request has been closed, destroying');
+      console.log(
+        'request to download was closed, so destroying the S3 file stream'
+      );
       cancelled = true;
       fileStream.destroy();
     });
@@ -22,11 +24,11 @@ module.exports = async function(req, res) {
     fileStream
       .pipe(res)
       .on('finish', async () => {
-        console.log('filestream pipe has finished');
         if (cancelled) {
-          console.log('damn son you were cancelled');
+          console.log('file stream finished in cancelled state');
           return;
         }
+        console.log('file stream finished');
 
         const dl = meta.dl + 1;
         const dlimit = meta.dlimit;
@@ -50,7 +52,6 @@ module.exports = async function(req, res) {
           console.log('you have faced some sort of an error here', e);
           log.info('StorageError:', id);
         }
-        console.log('okay the entire thing is done');
       })
       .on('error', error => {
         console.log('piping to response threw us an error', error);
