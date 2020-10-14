@@ -1,11 +1,11 @@
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
-
-AWS.config.update({
+const s3 = new AWS.S3({
   httpOptions: {
     timeout: 10 * 60 * 1000
   }
 });
+
+console.log({ s3 });
 
 class S3Storage {
   constructor(config, log) {
