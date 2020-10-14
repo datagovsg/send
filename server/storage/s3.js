@@ -1,9 +1,7 @@
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
-
-AWS.config.update({
+const s3 = new AWS.S3({
   httpOptions: {
-    timeout: 10 * 60 * 1000
+    timeout: 60 * 60 * 1000
   }
 });
 
