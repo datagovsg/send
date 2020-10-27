@@ -21,7 +21,7 @@ jobs:
       region: ap-southeast-1
       zip_file: "$ELASTICBEANSTALK_DEPLOYMENT_ZIP_FILE"
       app: vaultgovsg-send
-      env: send-vaultgovsg-staging
+      env: staging-send
       bucket_name: send-vaultgovsg-staging-elasticbeanstalk
       edge: true
       wait_until_deployed: true
