@@ -125,6 +125,7 @@ module.exports = function(app) {
         const transporter = nodemailer.createTransport({
           SES: new AWS.SES({ region: 'us-west-2' }),
         })
+        await transporter.sendMail(mailOptions)
         next()
       }
     }
