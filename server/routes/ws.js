@@ -111,7 +111,8 @@ module.exports = function(ws, req) {
         metadata,
         dlimit,
         auth: auth.split(' ')[1],
-        nonce: crypto.randomBytes(16).toString('base64')
+        nonce: crypto.randomBytes(16).toString('base64'),
+        ownerEmail: req.session.email
       };
 
       const protocol = config.env === 'production' ? 'https' : req.protocol;

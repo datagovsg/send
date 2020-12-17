@@ -10,6 +10,9 @@ const pages = require('./pages');
 const filelist = require('./filelist');
 const clientConstants = require('../clientConstants');
 const cookieParser = require('cookie-parser');
+const nodemailer = require('nodemailer')
+const moment = require('moment-timezone')
+const AWS = require('aws-sdk')
 
 const redisClient = require('redis').createClient(config.redis_session_url);
 const session = require('express-session');
@@ -104,6 +107,34 @@ module.exports = function(app) {
     }
   });
 
+  const sendEmail = async (req, res, next) => {
+    const ownerEmail = req.meta.ownerEmail
+    // Files with the old format of meta will not have ownerEmail
+    if (ownerEmail) {
+      const timestamp = moment().tz("Asia/Singapore").format('MMM Do YYYY h:mm A')
+      const mailOptions = {
+        to: ownerEmail,
+        from: 'vault.gov.sg <donotreply@mail.vault.gov.sg>',
+        subject: 'Your Vault - Send file has been downloaded',
+        html: `${req.session.email} has downloaded your data from Vault - Send on ${timestamp}`,
+      }
+      if (IS_DEV) {
+        console.log(mailOptions)
+        next()
+      } else {
+        try {
+          const transporter = nodemailer.createTransport({
+            SES: new AWS.SES({ region: 'us-west-2' }),
+          })
+          await transporter.sendMail(mailOptions)
+        } catch (sendingError) {
+          console.log('Mail sending failed with error:', sendingError)
+        }
+        next()
+      }
+    }
+  }
+
   const sessionIsValid = (req, res, next) => {
     if (req.session.email) {
       return next();
@@ -140,6 +171,7 @@ module.exports = function(app) {
     vaultSessionMgmt,
     sessionIsValid,
     auth.hmac,
+    sendEmail,
     require('./download')
   );
   app.get(

@@ -128,6 +128,7 @@ describe('Storage', function() {
         dlimit: 1,
         auth: 'foo',
         metadata: 'bar',
+        ownerEmail: 'foo@bar.com',
         nonce: 'baz',
         owner: 'bmo'
       };
