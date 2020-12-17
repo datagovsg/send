@@ -122,10 +122,14 @@ module.exports = function(app) {
         console.log(mailOptions)
         next()
       } else {
-        const transporter = nodemailer.createTransport({
-          SES: new AWS.SES({ region: 'us-west-2' }),
-        })
-        await transporter.sendMail(mailOptions)
+        try {
+          const transporter = nodemailer.createTransport({
+            SES: new AWS.SES({ region: 'us-west-2' }),
+          })
+          await transporter.sendMail(mailOptions)
+        } catch (sendingError) {
+          console.log('Mail sending failed with error:', sendingError)
+        }
         next()
       }
     }
