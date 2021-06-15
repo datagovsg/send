@@ -137,6 +137,14 @@ module.exports = function(app) {
 
   const sessionIsValid = (req, res, next) => {
     if (req.session.email) {
+      // Check if blocker is enabled, if so redirect non-OGP users away from Send
+      if (
+        process.env.BLOCK_NON_OGP === 'true' &&
+        req.session.email.includes('@open.gov.sg') === false
+      ) {
+        return res.redirect(config.LOGIN_URL);
+      }
+
       return next();
     } else {
       // The Regex below removes '/download/' from the '/download/download_id/' URL
