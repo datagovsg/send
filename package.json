@@ -145,7 +145,7 @@
     "@fluent/langneg": "^0.3.0",
     "@google-cloud/storage": "^4.1.1",
     "@sentry/node": "^5.8.0",
-    "aws-sdk": "^2.807.0",
+    "aws-sdk": "^2.933.0",
     "body-parser": "^1.19.0",
     "choo": "^7.0.0",
     "cldr-core": "^35.1.0",
